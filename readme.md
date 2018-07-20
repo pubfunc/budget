@@ -4,9 +4,13 @@ Budget is a simple personal accounting app.
 
 Features:
  - Import bank statements to record transactions
+ - Categorize transactions into accounts
+ - Autocategorization from transaction imports
+ - View account summaries and charts
 
-
-
+Tech:
+ - Laravel 5.6
+ - Bootstrap 4
 
 
 ## Research
