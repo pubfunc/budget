@@ -1,0 +1,31 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Quicksand:300,400');
+@import url('https://use.fontawesome.com/releases/v5.1.1/css/regular.css');
+@import url('https://use.fontawesome.com/releases/v5.1.1/css/fontawesome.css');
+// <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/regular.css" integrity="sha384-QNorH84/Id/CMkUkiFb5yTU3E/qqapnCVt6k5xh1PFIJ9hJ8VfovwwH/eMLQTjGS" crossorigin="anonymous">
+// <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/fontawesome.css" integrity="sha384-0b7ERybvrT5RZyD80ojw6KNKz6nIAlgOKXIcJ0CV7A6Iia8yt2y1bBfLBOwoc9fQ" crossorigin="anonymous">
+// font-family: 'Quicksand', sans-serif;
+// font-family: 'Open Sans', sans-serif;
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+
+.icon-1 {
+  font-size: $font-size-base;
+}
+.icon-2 {
+  font-size: $font-size-base * 1.5;
+}
+.icon-3 {
+  font-size: $font-size-base * 2;
+}
