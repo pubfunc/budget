@@ -3,8 +3,8 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
@@ -14,21 +14,30 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <div class="row justify-content-around text-center">
+                        <div class="col-sm-4 col-md-3 p-4 m-2 shadow-sm bg-light">
+                            <h4>Liabilities</h4>
+                            <p class="lead">{{ currency(rand(0,999999)) }}</p>
+                        </div>
+                        <div class="col-sm-4 col-md-3 p-4 m-2 shadow-sm bg-light">
+                            <h4>Capital</h4>
+                            <p class="lead">{{ currency(rand(0,999999)) }}</p>
+                        </div>
+                        <div class="col-sm-4 col-md-3 p-4 m-2 shadow-sm bg-light">
+                            <h4>Assets</h4>
+                            <p class="lead">{{ currency(rand(0,999999)) }}</p>
+                        </div>
+                    </div>
+
+
+                    <a href="{{ route('accounts.index') }}" class="btn btn-primary">Accounts</a>
+                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Transactions</a>
+                    <a href="{{ route('statement.preview') }}" class="btn btn-secondary">Upload Statement</a>
+
                 </div>
 
 
             </div>
-        </div>
-    </div>
-    <div class="row justify-content-center my-3">
-        <div class="col-md-6">
-            <a href="{{ route('accounts.index') }}" class="btn btn-primary btn-block btn-lg">Accounts</a>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <a href="{{ route('transactions.index') }}" class="btn btn-secondary btn-block btn-lg">Transactions</a>
         </div>
     </div>
 </div>

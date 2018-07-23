@@ -24,10 +24,17 @@
     <div id="app">
         <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-primary">
             <div class="container">
+                @guest
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <i class="far fa-chart-bar"></i>
                     {{ config('app.name', 'Laravel') }}
                 </a>
+                @else
+                <a class="navbar-brand" href="{{ route('home') }}">
+                    <i class="far fa-chart-bar"></i>
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+                @endif
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
