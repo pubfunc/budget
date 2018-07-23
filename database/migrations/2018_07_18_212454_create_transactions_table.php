@@ -17,14 +17,14 @@ class CreateTransactionsTable extends Migration
             $table->increments('id');
 
             $table->string('description');
-            
+
             $table->bigInteger('amount');
-            
+
             $table->string('debit_account_id', 128)->nullable();
             $table->string('credit_account_id', 128)->nullable();
 
             $table->string('import_id', 128);
-            
+
             $table->timestamp('date');
 
             $table->timestamps();
@@ -33,7 +33,7 @@ class CreateTransactionsTable extends Migration
                     ->references('id')
                     ->on('accounts')
                     ->onDelete('set null');
-    
+
             $table->foreign('credit_account_id')
                     ->references('id')
                     ->on('accounts')

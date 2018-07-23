@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-use Smalot\PdfParser\Parser;
-use Spatie\PdfToText\Pdf;
+use App\Statements\StatementParser;
 
 class StatementController extends Controller
 {
@@ -19,7 +18,7 @@ class StatementController extends Controller
 
     public function upload(Request $request){
         $request->validate([
-            'format'=> ['required', Rule::in('fnb')],
+            'format'=> ['required', Rule::in(array_keys(trans('statement.formats')))],
             'file' => 'required|file|mimetypes:application/pdf|max:100'
         ]);
 
@@ -27,19 +26,13 @@ class StatementController extends Controller
 
         if($file->isValid()){
 
+            $statementData = (new StatementParser())->parseFile($request->format, $file->path());
 
-            $text = (new Pdf())
-                    ->setPdf($file->path())
-                    ->setOptions(['layout'])
-                    ->text();
-
-            $lines = preg_match_all("/^([0-9]+\ (?:Jan|Feb))\ ([[:print:]]+)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr))?)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr)))[[:blank:]]*([0-9\.]+)?$/mU", $text, $matches, PREG_SET_ORDER);
-
-            dd($matches);
-
-            return $text;
-
+            return dd($statementData);
         }
 
     }
+
+
+
 }

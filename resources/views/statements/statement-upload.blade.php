@@ -33,7 +33,9 @@
                     <div class="form-group">
                         <select name="format" class="form-control" id="select_format">
                             <option>Select Statement Format</option>
-                            <option value="fnb" {{ old('format') === 'fnb' ? 'selected' : '' }}>FNB</option>
+                            @foreach(trans('statement.formats') as $key=>$label)
+                            <option value="{{ $key }}" {{ old('format') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">
