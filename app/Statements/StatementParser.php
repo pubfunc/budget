@@ -10,8 +10,9 @@ class StatementParser {
 
     const FORMAT_FNB_DEBIT_CARD = 'fnb_debit_card';
 
-    const FNB_DEBIT_TRANSACTION_REGEX = "/^([0-9]+\ (?:Jan|Feb))\ ([[:print:]]+)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr))?)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr)))[[:blank:]]*([0-9\.]+)?$/mU";
+    const FNB_DEBIT_TRANSACTION_REGEX = "/^([0-9]+\ (?:[a-zA-Z]{3}))\ ([[:print:]]+)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr))?)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr|Dr)))[[:blank:]]*([0-9\.]+)?$/mU";
     const FNB_DEBIT_PERIOD_REGEX = "/(?:Statement\ Period\ \:\ )([0-9]+\ [a-zA-Z]+\ [0-9]+)(?:\ to\ )([0-9]+\ [a-zA-Z]+\ [0-9]+)/m";
+    const FNB_AMOUNT_REGEX = "/^([0-9]{1,3},(?:[0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])\ ?(Cr|Dr)?$/";
 
     public function parseFile($format, $path){
 
@@ -28,6 +29,8 @@ class StatementParser {
     public function parseFnbDebitCardFormat($path){
         $text = $this->pdfToText($path);
 
+        // dd($text);
+
         $data = [];
 
         $count = preg_match(self::FNB_DEBIT_PERIOD_REGEX, $text, $matches);
@@ -43,22 +46,31 @@ class StatementParser {
         foreach($matches as $i=>$match){
 
             $date = Carbon::parse($match[1])->year($period_start->year);
+            $count = preg_match(self::FNB_AMOUNT_REGEX, $match[3], $amount_matches);
+
+            if($count === false || $count === 0) throw new InvalidArgumentException(sprintf('Encountered invalid transaction amount: "%s"', $match[3]));
+
+            // dd($amount_matches);
+
+            $amount = intval( str_replace(['.',','], [''], $amount_matches[1].$amount_matches[2]) );
 
             while($date->lt($period_start)){
                 $date->addYear();
             }
 
             $transaction = [
-                'date' => $date->toDateTimeString(),
+                'date' => $date->toDateString(),
                 'description' => $this->cleanLine($match[2]),
-                'amount' => $match[3]
+                'amount' => $amount,
+                'side' => ''
             ];
 
             $data['transactions'][] = $transaction;
         }
 
-        $data['period_start'] = $period_start->toDateTimeString();
-        $data['period_end'] = $period_end->toDateTimeString();
+        $data['period_start'] = $period_start->toDateString();
+        $data['period_end'] = $period_end->toDateString();
+        $data['text'] = $text;
 
         return $data;
     }

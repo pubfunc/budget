@@ -8,7 +8,7 @@ class Account extends Model
 {
 
     const TYPE_ASSET = 'asset';
-    const TYPE_LIABILITY = 'liabitity';
+    const TYPE_LIABILITY = 'liability';
     const TYPE_CAPITAL = 'capital';
 
     const TYPES = [

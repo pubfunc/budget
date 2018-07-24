@@ -6,17 +6,21 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 use App\Statements\StatementParser;
+use App\Statement;
 
 class StatementController extends Controller
 {
 
-    public function preview(){
+    public function uploader(){
 
 
         return view('statements.statement-upload');
     }
 
     public function upload(Request $request){
+
+        $user = $this->user();
+
         $request->validate([
             'format'=> ['required', Rule::in(array_keys(trans('statement.formats')))],
             'file' => 'required|file|mimetypes:application/pdf|max:100'
@@ -24,15 +28,39 @@ class StatementController extends Controller
 
         $file = $request->file('file');
 
-        if($file->isValid()){
+        $statementData = (new StatementParser())->parseFile($request->format, $file->path());
 
-            $statementData = (new StatementParser())->parseFile($request->format, $file->path());
+        $statement = new Statement();
+        $statement->format = $request->format;
+        $statement->path = $file->store('statements');
+        $statement->period_start = $statementData['period_start'];
+        $statement->period_end = $statementData['period_end'];
+        $statement->user()->associate($user);
+        $statement->save();
 
-            return dd($statementData);
-        }
+        return redirect()->route('statement.preview', $statement->id);
 
     }
 
+    public function preview($id){
+        $user = $this->user();
 
+        $statement = Statement::findOrFail($id);
+        $statement_data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
+
+        return view('statements.statement-preview', compact('statement', 'statement_data'));
+    }
+
+    public function index(){
+
+        $statements = Statement::all();
+
+        return view('statements.statement-index', compact('statements'));
+    }
+
+    public function destroy($id){
+
+
+    }
 
 }

@@ -17,12 +17,12 @@ class CreateStatementsTable extends Migration
             $table->increments('id');
 
             $table->string('format', 32);
-            $table->string('filename');
+            $table->string('path');
 
             $table->date('period_start');
             $table->date('period_end');
 
-            $table->string('guid', 128);
+            // $table->string('guid', 128);
 
             $table->unsignedInteger('user_id');
 
