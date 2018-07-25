@@ -13,8 +13,8 @@ class StatementData {
     ];
 
     public $transactions = [];
-
     public $text = null;
+
 
     function __construct($format, $path){
         $this->format = $format;
