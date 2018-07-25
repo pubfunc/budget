@@ -13,13 +13,14 @@ class StatementParser {
     const FNB_DEBIT_TRANSACTION_REGEX = "/^([0-9]+\ (?:[a-zA-Z]{3}))\ ([[:print:]]+)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr))?)[[:blank:]]+([0-9\.\,]+(?:\ (?:Cr|Dr)))[[:blank:]]*([0-9\.]+)?$/mU";
     const FNB_DEBIT_PERIOD_REGEX = "/(?:Statement\ Period\ \:\ )([0-9]+\ [a-zA-Z]+\ [0-9]+)(?:\ to\ )([0-9]+\ [a-zA-Z]+\ [0-9]+)/m";
     const FNB_AMOUNT_REGEX = "/^([0-9]{1,3},(?:[0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])\ ?(Cr|Dr)?$/";
+    const FNB_ACCOUNT_REGEX = "/^([\w+\ ]+\ Account)\ ([0-9]+)$/m";
 
     public function parseFile($format, $path){
 
         $method = 'parse'.Str::studly($format).'Format';
 
         if(method_exists($this, $method)){
-            return $this->$method($path);
+            return $this->$method($format, $path);
         }
 
         throw new InvalidArgumentException(sprintf('Unknown format, "%s"', $format));
@@ -31,29 +32,32 @@ class StatementParser {
 
         // dd($text);
 
-        $data = [];
+        
 
         $count = preg_match(self::FNB_DEBIT_PERIOD_REGEX, $text, $matches);
+        if(!$count) throw new InvalidArgumentException('Could not extract statement period.');
 
-        if($count === false || $count === 0) throw new InvalidArgumentException('Could not extract statement period.');
+        $count = preg_match();
 
         $period_start = Carbon::parse($matches[1]);
         $period_end = Carbon::parse($matches[2])->endOfDay();
 
         $count = preg_match_all(self::FNB_DEBIT_TRANSACTION_REGEX, $text, $matches, PREG_SET_ORDER);
 
-        $data['transactions'] = [];
+        if(!$count) throw new InvalidArgumentException('No transactions found for statement.');
+
+        $currency = 'ZAR';
+
+        $transactions = [];
         foreach($matches as $i=>$match){
 
-            $date = Carbon::parse($match[1])->year($period_start->year);
             $count = preg_match(self::FNB_AMOUNT_REGEX, $match[3], $amount_matches);
 
             if($count === false || $count === 0) throw new InvalidArgumentException(sprintf('Encountered invalid transaction amount: "%s"', $match[3]));
 
-            // dd($amount_matches);
-
             $amount = intval( str_replace(['.',','], [''], $amount_matches[1].$amount_matches[2]) );
 
+            $date = Carbon::parse($match[1])->year($period_start->year);
             while($date->lt($period_start)){
                 $date->addYear();
             }
@@ -65,8 +69,10 @@ class StatementParser {
                 'side' => ''
             ];
 
-            $data['transactions'][] = $transaction;
+            $transactions[] = $transaction;
         }
+
+        $data = new StatementData('FNB Debit Card Statement', $path);
 
         $data['period_start'] = $period_start->toDateString();
         $data['period_end'] = $period_end->toDateString();

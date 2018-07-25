@@ -20,11 +20,24 @@
                     <h2 class="card-title">
                         Statement Preview
                     </h2>
+
                 </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Period Start:</strong> {{ carbon($statement_data['period_start'])->toFormattedDateString() }}</li>
+                    <li class="list-group-item"><strong>Period End:</strong> {{ carbon($statement_data['period_end'])->toFormattedDateString() }} ({{ carbon($statement_data['period_end'])->diffForHumans() }})</li>
+                    <li class="list-group-item"><strong># Transactions:</strong> {{ count($statement_data['transactions']) }}</li>
+                </ul>
 
                 <table class="table table-striped table-hover table-sm">
                     <thead>
                         <tr>
+                            <th>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                                    <label class="form-check-label" for="inlineCheckbox1">All</label>
+                                </div>
+                            </th>
                             <th>Date</th>
                             <th>Description</th>
                             <th>Amount</th>
@@ -33,7 +46,10 @@
                     <tbody>
                         @foreach($statement_data['transactions'] as $transaction)
                         <tr>
-                            <td>{{ $transaction['date'] }}</td>
+                            <td class="text-center">
+                                <input type="checkbox" value="option1">
+                            </td>
+                            <td class="text-nowrap">{{ $transaction['date'] }}</td>
                             <td><samp>{{ $transaction['description'] }}</samp></td>
                             <td>{{ $transaction['amount'] }}</td>
                         </tr>

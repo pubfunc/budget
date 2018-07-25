@@ -4,8 +4,93 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b348d8ac0a2c3d11ecae0c0e788cc337",
+    "content-hash": "be78516d9bf81c9a323cfe9d4db4c415",
     "packages": [
+        {
+            "name": "brick/math",
+            "version": "0.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/math.git",
+                "reference": "726a8f271b440d6788a81edf486dd756fb23b6fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/math/zipball/726a8f271b440d6788a81edf486dd756fb23b6fc",
+                "reference": "726a8f271b440d6788a81edf486dd756fb23b6fc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "2.*",
+                "phpunit/phpunit": "7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Math\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Arbitrary-precision arithmetic library",
+            "keywords": [
+                "Arbitrary-precision",
+                "BigInteger",
+                "BigRational",
+                "arithmetic",
+                "bigdecimal",
+                "brick",
+                "math"
+            ],
+            "time": "2018-07-21T23:35:12+00:00"
+        },
+        {
+            "name": "brick/money",
+            "version": "0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brick/money.git",
+                "reference": "c9c166543629dcc49b2941374943cbc1a63674d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/brick/money/zipball/c9c166543629dcc49b2941374943cbc1a63674d5",
+                "reference": "c9c166543629dcc49b2941374943cbc1a63674d5",
+                "shasum": ""
+            },
+            "require": {
+                "brick/math": "~0.6.2 || 0.7.*",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "ext-pdo": "*",
+                "phpunit/phpunit": "6.*",
+                "satooshi/php-coveralls": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Brick\\Money\\": "src/",
+                    "Brick\\Money\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Money and currency library",
+            "keywords": [
+                "brick",
+                "currency",
+                "money"
+            ],
+            "time": "2018-01-10T22:17:01+00:00"
+        },
         {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "0.1",
