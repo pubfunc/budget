@@ -19,6 +19,9 @@ class CreateStatementsTable extends Migration
             $table->string('format', 32);
             $table->string('path');
 
+            $table->string('title');
+            $table->string('filename');
+
             $table->date('period_start');
             $table->date('period_end');
 

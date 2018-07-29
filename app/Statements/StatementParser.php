@@ -27,17 +27,13 @@ class StatementParser {
     }
 
 
-    public function parseFnbDebitCardFormat($path){
+    public function parseFnbDebitCardFormat($format, $path){
         $text = $this->pdfToText($path);
 
         // dd($text);
 
-        
-
         $count = preg_match(self::FNB_DEBIT_PERIOD_REGEX, $text, $matches);
         if(!$count) throw new InvalidArgumentException('Could not extract statement period.');
-
-        $count = preg_match();
 
         $period_start = Carbon::parse($matches[1]);
         $period_end = Carbon::parse($matches[2])->endOfDay();

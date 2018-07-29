@@ -28,3 +28,4 @@ Route::get('/statements/upload', 'StatementController@uploader')->name('statemen
 Route::post('/statements/upload', 'StatementController@upload')->name('statement.upload')->middleware(['auth']);
 Route::get('/statements/{id}', 'StatementController@preview')->name('statement.preview')->middleware(['auth']);
 Route::delete('/statements/{id}', 'StatementController@destroy')->name('statement.destroy')->middleware(['auth']);
+Route::delete('/statements/{id}/download', 'StatementController@download')->name('statement.download')->middleware(['auth']);

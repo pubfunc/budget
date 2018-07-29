@@ -3,9 +3,9 @@
 class StatementData {
 
     public $path;
-    public $format;
 
     public $info = [
+        'format' => null,
         'account_title' => null,
         'account_number' => null,
         'open_balance' => null,
@@ -15,10 +15,8 @@ class StatementData {
     public $transactions = [];
     public $text = null;
 
-
-    function __construct($format, $path){
+    function __construct($format){
         $this->format = $format;
-        $this->path = $path;
     }
 
 }

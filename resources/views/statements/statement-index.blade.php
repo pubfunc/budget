@@ -31,6 +31,9 @@
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="far fa-trash-alt"></i>
                                     </button>
+                                    <a class="btn btn-info btn-sm" href="{{ route('statement.download', $statement->id) }}">
+                                        <i class="fas fa-file-download"></i>
+                                    </a>
                                 </div>
                                 <form id="form_delete_{{ snake_case($statement->id) }}" action="{{ route('statement.destroy', $statement->id) }}">
                                     @method('DELETE')
