@@ -21,6 +21,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+    @section('body')
     <div class="app" id="app">
         <nav class="sidebar navbar navbar-expand-md navbar-dark bg-primary">
 
@@ -91,5 +92,7 @@
             @yield('content')
         </main>
     </div>
+    @endsection
+    @yield('body')
 </body>
 </html>

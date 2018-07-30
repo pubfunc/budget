@@ -29,6 +29,7 @@ class CreateStatementsTable extends Migration
 
             $table->unsignedInteger('user_id');
 
+            $table->timestamp('imported_at')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

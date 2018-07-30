@@ -31,10 +31,12 @@ class StatementController extends Controller
         $statementData = (new StatementParser())->parseFile($request->format, $file->path());
 
         $statement = new Statement();
+        $statement->title = $statementData->attributes['title'];
+        $statement->filename = $file->getClientOriginalName();
         $statement->format = $request->format;
         $statement->path = $file->store('statements');
-        $statement->period_start = $statementData['period_start'];
-        $statement->period_end = $statementData['period_end'];
+        $statement->period_start = $statementData->attributes['period_start'];
+        $statement->period_end = $statementData->attributes['period_end'];
         $statement->user()->associate($user);
         $statement->save();
 

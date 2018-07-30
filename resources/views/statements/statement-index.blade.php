@@ -13,6 +13,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Title</th>
+                            <th>File</th>
                             <th>From</th>
                             <th>To</th>
                             <th></th>
@@ -24,8 +26,10 @@
                             <td>
                                 <a class="btn btn-sm btn-outline-primary btn-block text-left" href="{{ route('statement.preview', $statement->id) }}">{{ $statement->id }}</a>
                             </td>
-                            <td>{{ $statement->period_start }}</td>
-                            <td>{{ $statement->period_end }}</td>
+                            <td>{{ $statement->title }}</td>
+                            <td>{{ $statement->filename }}</td>
+                            <td class="text-nowrap">{{ $statement->period_start }}</td>
+                            <td class="text-nowrap">{{ $statement->period_end }}</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <button type="submit" class="btn btn-danger btn-sm">
