@@ -15,9 +15,10 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
 
-            $table->string('id', 128)->primary();
+            $table->increments();
 
             $table->string('type', 32);
+            $table->string('category', 128);
 
             $table->string('title', 64);
             $table->string('description')->nullable();

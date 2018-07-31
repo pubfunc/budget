@@ -20,8 +20,8 @@ class CreateTransactionsTable extends Migration
 
             $table->bigInteger('amount');
 
-            $table->string('debit_account_id', 128)->nullable();
-            $table->string('credit_account_id', 128)->nullable();
+            $table->unsignedInteger('debit_account_id', 128)->nullable();
+            $table->unsignedInteger('credit_account_id', 128)->nullable();
 
             $table->string('import_id', 128);
 

@@ -57,10 +57,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('accounts', ' active') }}" href="{{ route('accounts.index') }}">Accounts</a>
+                            <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index') }}">Accounts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('transactions', ' active') }}" href="{{ route('transactions.index') }}">Transactions</a>
+                            <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index') }}">Transactions</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index') }}">Statements</a>

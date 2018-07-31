@@ -23,7 +23,7 @@
                             <th>Period Start</th>
                             <td>{{ carbon($statement_data->attributes['period_start'])->toFormattedDateString() }}</td>
                             <th># Transactions</th>
-                            <td>{{ count($statement_data->transactions) }}</td>
+                            <td>{{ count($statement_data->transaction) }}</td>
                         </tr>
                         <tr>
                             <th>Period End</th>
@@ -41,14 +41,14 @@
 
             <ul id="statement_tabs" class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" role="tab" href="#preview_transactions_tab">Transactions</a>
+                    <a class="nav-link active" data-toggle="tab" role="tab" href="#preview_transaction_tab">Transactions</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" role="tab" href="#preview_text_tab">Text</a>
                 </li>
             </ul>
             <div class="tab-content" id="statement_tab_content">
-                <div class="card tab-pane active" id="preview_transactions_tab">
+                <div class="card tab-pane active" id="preview_transaction_tab">
 
 
                     <table class="table table-striped table-hover table-sm">
@@ -76,7 +76,7 @@
                                 <td class="{{ $statement_data->attributes['open_balance']->getAmount()->isPositive() ? 'text-success' : 'text-danger' }}">{{ $statement_data->attributes['open_balance'] }}</td>
                             </tr>
                             @endif
-                            @foreach($statement_data->transactions as $transaction)
+                            @foreach($statement_data->transaction as $transaction)
                             <tr>
                                 <td class="text-center">
                                     <input type="checkbox" value="option1">

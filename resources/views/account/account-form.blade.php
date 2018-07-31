@@ -25,7 +25,7 @@
 
                     <form 
                         id="form_account"
-                        action="{{ $editing ? route('accounts.update', [$account->id]) : route('accounts.store') }}" 
+                        action="{{ $editing ? route('account.update', [$account->id]) : route('account.store') }}" 
                         method="POST">
                         {{ csrf_field() }}
 

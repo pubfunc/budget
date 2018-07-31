@@ -19,7 +19,7 @@ class AccountController extends Controller
         $user = Auth::user();
         $accounts = Account::where('user_id', $user->id)->get();
 
-        return view('accounts.account-index', compact('accounts', 'user'));
+        return view('account.account-index', compact('accounts', 'user'));
     }
 
     /**
@@ -36,7 +36,7 @@ class AccountController extends Controller
         $parentAccounts = Account::where('user_id', $user->id)
                                 ->get();
 
-        return view('accounts.account-form', compact('editing', 'parentAccounts'));
+        return view('account.account-form', compact('editing', 'parentAccounts'));
     }
 
     /**
@@ -62,7 +62,7 @@ class AccountController extends Controller
         $account->save();
 
         return redirect()
-                    ->route('accounts.index')
+                    ->route('account.index')
                     ->with(
                         'success_status', 
                         sprintf("Account '%s' added", $account->title)
@@ -87,7 +87,7 @@ class AccountController extends Controller
         $credits_sum = $account->creditTransactions()->sum('amount');
         $balance = $debits_sum - $credits_sum;
 
-        return view('accounts.account-detail', compact(
+        return view('account.account-detail', compact(
                         'account',
                         'transactions',
                         'debits_sum',
@@ -112,7 +112,7 @@ class AccountController extends Controller
                                 ->where('id', '!=', $account->id)
                                 ->get();
 
-        return view('accounts.account-form', compact('editing', 'account', 'parentAccounts'));
+        return view('account.account-form', compact('editing', 'account', 'parentAccounts'));
     }
 
     /**

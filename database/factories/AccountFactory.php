@@ -4,7 +4,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Account::class, function (Faker $faker) {
     return [
-        'id' => str_slug($faker->domainWord) . '.' .str_slug($faker->domainWord),
         'title' =>  $faker->firstName,
         'type' => $faker->randomElement(App\Account::TYPES),
         'description' => $faker->sentences(2, true),

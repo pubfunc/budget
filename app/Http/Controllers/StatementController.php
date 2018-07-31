@@ -14,7 +14,7 @@ class StatementController extends Controller
     public function uploader(){
 
 
-        return view('statements.statement-upload');
+        return view('statement.statement-upload');
     }
 
     public function upload(Request $request){
@@ -50,14 +50,14 @@ class StatementController extends Controller
         $statement = Statement::findOrFail($id);
         $statement_data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
 
-        return view('statements.statement-preview', compact('statement', 'statement_data'));
+        return view('statement.statement-preview', compact('statement', 'statement_data'));
     }
 
     public function index(){
 
         $statements = Statement::all();
 
-        return view('statements.statement-index', compact('statements'));
+        return view('statement.statement-index', compact('statements'));
     }
 
     public function destroy($id){

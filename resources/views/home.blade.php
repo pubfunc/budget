@@ -30,8 +30,8 @@
                     </div>
 
 
-                    <a href="{{ route('accounts.index') }}" class="btn btn-primary">Accounts</a>
-                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Transactions</a>
+                    <a href="{{ route('account.index') }}" class="btn btn-primary">Accounts</a>
+                    <a href="{{ route('transaction.index') }}" class="btn btn-secondary">Transactions</a>
                     <a href="{{ route('statement.index') }}" class="btn btn-secondary">Statements</a>
                     <a href="{{ route('statement.uploader') }}" class="btn btn-secondary">Upload Statement</a>
 
