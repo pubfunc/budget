@@ -14,7 +14,9 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Transaction::where('user_id', $this->user()->id)->get();
+
+        return view('transaction.transaction-index', compact('transactions'));
     }
 
     /**

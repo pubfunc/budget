@@ -50,20 +50,20 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @else
                         <li class="nav-item">
                             <a class="nav-link{{ is_active_route('home', ' active') }}" href="{{ route('home') }}">
                                 <i class="fas fa-home"></i>
                             </a>
                         </li>
+                    @elseif(isset($context))
                         <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index') }}">Accounts</a>
+                            <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index', $context) }}">Accounts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index') }}">Transactions</a>
+                            <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index', $context) }}">Transactions</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index') }}">Statements</a>
+                            <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index', $context) }}">Statements</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

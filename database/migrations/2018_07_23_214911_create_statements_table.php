@@ -27,14 +27,14 @@ class CreateStatementsTable extends Migration
 
             // $table->string('guid', 128);
 
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('organization_id');
 
             $table->timestamp('imported_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('organization_id')
                     ->references('id')
-                    ->on('users')
+                    ->on('organizations')
                     ->onDelete('cascade');
         });
     }

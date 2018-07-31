@@ -15,17 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', 'HomeController@index')->name('home');
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware(['auth']);
+Route::resource('organization', 'OrganizationController')->middleware(['auth']);
 
-Route::resource('account', 'AccountController')->middleware(['auth']);
-Route::resource('transaction', 'TransactionController')->middleware(['auth']);
+Route::group(['prefix' => 'org/{organization}', 'middleware' => ['auth', 'context']], function(){
 
 
-Route::get('/statement', 'StatementController@index')->name('statement.index')->middleware(['auth']);
-Route::get('/statement/upload', 'StatementController@uploader')->name('statement.uploader')->middleware(['auth']);
-Route::post('/statement/upload', 'StatementController@upload')->name('statement.upload')->middleware(['auth']);
-Route::get('/statement/{id}', 'StatementController@preview')->name('statement.preview')->middleware(['auth']);
-Route::delete('/statement/{id}', 'StatementController@destroy')->name('statement.destroy')->middleware(['auth']);
-Route::delete('/statement/{id}/download', 'StatementController@download')->name('statement.download')->middleware(['auth']);
+    Route::resource('account', 'AccountController');
+    Route::resource('transaction', 'TransactionController');
+
+    Route::get('/statement', 'StatementController@index')->name('statement.index');
+    Route::get('/statement/upload', 'StatementController@uploader')->name('statement.uploader');
+    Route::post('/statement/upload', 'StatementController@upload')->name('statement.upload');
+    Route::get('/statement/{id}', 'StatementController@preview')->name('statement.preview');
+    Route::delete('/statement/{id}', 'StatementController@destroy')->name('statement.destroy');
+    Route::delete('/statement/{id}/download', 'StatementController@download')->name('statement.download');
+
+});

@@ -15,7 +15,7 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
 
-            $table->increments();
+            $table->increments('id');
 
             $table->string('type', 32);
             $table->string('category', 128);
@@ -23,13 +23,13 @@ class CreateAccountsTable extends Migration
             $table->string('title', 64);
             $table->string('description')->nullable();
 
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('organization_id');
 
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('organization_id')
                     ->references('id')
-                    ->on('users')
+                    ->on('organizations')
                     ->onDelete('cascade');
 
         });

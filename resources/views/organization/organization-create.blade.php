@@ -3,19 +3,19 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
-
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title">Transactions</h2>
+                    <h2 class="card-title">Add Organization</h2>
+
+                    @component('organization.organization-form', ['action' => route('organization.store'), 'method' => 'POST'])
+                    @endcomponent
                 </div>
-                @component('transaction.transaction-table', ['transactions' => $transactions])
-                @endcomponent
+
                 <div class="card-footer text-right">
-                    <a href="{{ route('transaction.create') }}" class="btn btn-primary">Add Transaction</a>
+                    <button class="btn btn-primary" form="organization_form">Save</button>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
