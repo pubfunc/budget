@@ -22,8 +22,18 @@ $factory->state(App\Account::class, App\Account::TYPE_LIABILITY, function (Faker
     ];
 });
 
-$factory->state(App\Account::class, App\Account::TYPE_CAPITAL, function (Faker $faker) {
+$factory->state(App\Account::class, App\Account::TYPE_EQUITY, function (Faker $faker) {
     return [
-        'type' => App\Account::TYPE_CAPITAL
+        'type' => App\Account::TYPE_EQUITY
+    ];
+});
+$factory->state(App\Account::class, App\Account::TYPE_INCOME, function (Faker $faker) {
+    return [
+        'type' => App\Account::TYPE_INCOME
+    ];
+});
+$factory->state(App\Account::class, App\Account::TYPE_EXPENSE, function (Faker $faker) {
+    return [
+        'type' => App\Account::TYPE_EXPENSE
     ];
 });

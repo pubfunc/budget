@@ -5,6 +5,45 @@ use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
+
+    const ACCOUNTS_DATA = [
+        App\Account::TYPE_ASSET => [
+            ['title' => 'Cheque Account'],
+            ['title' => 'Savings Account'],
+        ],
+        App\Account::TYPE_LIABILITY => [
+            ['title' => 'Credit Card'],
+        ],
+        App\Account::TYPE_INCOME => [
+            ['title' => 'Saleries & Bonuses'],
+            ['title' => 'Interest Income'],
+            ['title' => 'Dividend Income'],
+            ['title' => 'Winnings'],
+        ],
+        App\Account::TYPE_EXPENSE => [
+            ['title' => 'Alcohol & Tobacco'],
+            ['title' => 'Bank Fees'],
+            ['title' => 'Car Loan'],
+            ['title' => 'Cleaning'],
+            ['title' => 'Credit Interest'],
+            ['title' => 'Health Specialist'],
+            ['title' => 'Furniture'],
+            ['title' => 'Gadgets'],
+            ['title' => 'Groceries'],
+            ['title' => 'Grooming & Beauty'],
+            ['title' => 'Insurance - Health'],
+            ['title' => 'Insurance - Vehicle'],
+            ['title' => 'Internet'],
+            ['title' => 'Lawn & Garden'],
+            ['title' => 'Mobile Phone'],
+            ['title' => 'Property Rent'],
+            ['title' => 'Vehicle Fuel'],
+            ['title' => 'Vehicle Repairs & Maintenence'],
+            ['title' => 'Utilities'],
+            ['title' => 'Home Improvement & Maintenance'],
+        ],
+    ];
+
     /**
      * Seed the application's database.
      *
@@ -23,31 +62,20 @@ class DatabaseSeeder extends Seeder
 
         $org->users()->attach($user);
 
-        $assetAccounts =
-            factory(App\Account::class, 5)
-                ->states(App\Account::TYPE_ASSET)
-                ->make()
-                ->each(function($account) use ($org){
-                    $account->organization()->associate($org)->save();
-                });
+        $accounts = collect([]);
 
-        $liabilityAccounts =
-            factory(App\Account::class, 5)
-                ->states(App\Account::TYPE_LIABILITY)
-                ->make()
-                ->each(function($account) use ($org){
-                    $account->organization()->associate($org)->save();
-                });
+        foreach(self::ACCOUNTS_DATA as $type=>$data){
+            foreach($data as $row){
+                $new = factory(App\Account::class, 1)
+                            ->states($type)
+                            ->make($row)
+                            ->each(function($account) use ($org){
+                                $account->organization()->associate($org)->save();
+                            });
 
-        $capitalAccounts =
-            factory(App\Account::class, 3)
-                ->states(App\Account::TYPE_CAPITAL)
-                ->make()
-                ->each(function($account) use ($org){
-                    $account->organization()->associate($org)->save();
-                });
-
-        $accounts = $assetAccounts->concat($liabilityAccounts)->concat($capitalAccounts);
+                $accounts = $accounts->concat($new);
+            }
+        }
 
         $transactions =
             factory(App\Transaction::class, 1000)

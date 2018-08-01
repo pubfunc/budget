@@ -7,6 +7,7 @@ use App\Organization;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AccountController extends Controller
 {
@@ -45,15 +46,16 @@ class AccountController extends Controller
     public function store(Organization $org, Request $request)
     {
         $this->validate($request, [
-            'parent_account_id' => 'nullable|string',
             'title' => 'required|string|min:3',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
+            'type' => ['required', Rule::in(Account::TYPES)]
         ]);
 
         $account = new Account();
 
-        $account->id = str_slug($request->title);
         $account->title = $request->title;
+        $account->description = $request->description;
+        $account->type = $request->type;
         $account->organization()->associate($org);
         $account->save();
 

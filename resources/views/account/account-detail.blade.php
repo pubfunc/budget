@@ -3,32 +3,37 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10 mb-2">
+        <div class="col-lg-10 mb-2">
 
-            <div class="card shadow-sm">
+            <div class="card shadow-sm mt-4">
                 <div class="card-body">
-                    <h2 class="card-title">
+                    <h1 class="card-title">
                         {{ $account->title }}
-                        <small class="text-muted">{{ $account->id }}</small>
-                    </h2>
+                        <small class="text-muted">#ACC{{ $account->id }}</small>
+                    </h1>
 
-                    <div class="row justify-content-around text-center">
+                    <p>
+                        {{ $account->description }}
+                    </p>
 
-                        <div class="col-sm-4 col-md-3 p-4 m-2 shadow-sm bg-light">
+                </div>
+                <div class="container-fluid">
+                    <div class="row justify-content-around text-center my-3">
+
+                        <div class="col p-4 ml-4 shadow-sm bg-light border border-primary">
                             <h4>Credits</h4>
                             <p class="lead">{{ currency($credits_sum) }}</p>
                         </div>
-                        <div class="col-sm-4 col-md-3 p-4 m-2 shadow-sm bg-light">
+                        <div class="col p-4 mx-2 shadow-sm bg-light border border-primary">
                             <h4>Debits</h4>
                             <p class="lead">{{ currency($debits_sum) }}</p>
                         </div>
-                        <div class="col-sm-4 col-md-3 p-4 m-2 shadow-sm bg-light">
+                        <div class="col p-4 mr-4 shadow-sm bg-light border border-primary">
                             <h4>Balance</h4>
                             <p class="lead">{{ currency($balance) }}</p>
                         </div>
 
                     </div>
-
                 </div>
                 <div class="card-footer text-right">
                     <a href="{{ route('account.create') }}" class="btn btn-warning">
@@ -48,8 +53,10 @@
         <div class="col-md-10">
 
             <div class="card shadow-sm">
-                <div class="card-header">
-                Transactions
+                <div class="card-body">
+                    <h3 class="card-title">
+                        Transactions
+                    </h3>
                 </div>
                 @component('transaction.transaction-table', ['transactions' => $transactions])
 

@@ -10,32 +10,20 @@
                     <a href="{{ route('account.create') }}" class="btn btn-primary float-right">Add Account</a>
                     <h2 class="card-title">Accounts</h2>
                 </div>
-                <table class="table table-striped table-hover m-0">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Title</th>
-                            <th>ID</th>
-                            <th>DEB</th>
-                            <th>CRE</th>
-                            <th>BAL</th>
-                            <th></th>
-                        </tr>
-                    </thead>
+
+                @foreach($accounts->groupBy('type') as $type=>$grouped_accounts)
+                <div class="card-body mt-3">
+                    <h3 class="card-title">{{ trans('account.types.' . $type . '.label') }}</h3>
+                </div>
+                <table class="table table-striped table-hover m-0 table-sm">
                     <tbody>
-                        @foreach($accounts as $account)
+                        @foreach($grouped_accounts as $account)
                         <tr>
-                            <td class="text-center">
-                                <i class="icon-2 {{ trans('account.types.' . $account->type . '.icon') }}"></i>
-                            </td>
-                            <td>{{ $account->title }}</td>
-                            <td>
-                                <a class="btn btn-sm btn-outline-primary btn-block text-left" href="{{ route('account.show', [$account->id]) }}">{{ $account->id }}</a>
-                            </td>
+                            <td width="300"><a class="btn btn-sm btn-primary btn-block text-left" href="{{ route('account.show', [$account->id]) }}">{{ $account->title }}</a></td>
                             <td>0</td>
                             <td>0</td>
                             <td>0</td>
-                            <td>
+                            <td class="text-right">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a class="btn btn-warning btn-sm" href="{{ route('account.edit', $account->id) }}">
                                         <i class="far fa-edit"></i>
@@ -53,6 +41,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                @endforeach
                 <div class="card-footer text-right">
                     
                 </div>

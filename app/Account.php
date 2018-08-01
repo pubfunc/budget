@@ -36,11 +36,4 @@ class Account extends Model
         return $this->hasMany(Transaction::class, 'credit_account_id');
     }
 
-    public function getParentIdAttribute(){
-
-        $parts = explode('.', $this->id);
-        array_pop($parts);
-        return implode('.', $parts);
-    }
-
 }

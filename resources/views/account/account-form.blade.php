@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            <div class="card">
+            <div class="card my-2">
                 <div class="card-body">
                     <h2 class="card-title">
                         @if($editing)
@@ -33,14 +33,6 @@
                         @method('PUT')
                         @endif
 
-                        <div class="form-group">
-                            <label for="">Parent</label>
-                            <select class="custom-select" name="parent_account_id" id="select_parent_account_id">
-                                @foreach($parentAccounts as $account)
-                                <option value="{{ $account->id }}" {{ old('parent_account_id', isset($account) ? $account->parent_id : null) === $account->id ? 'selected' : '' }}>{{ $account->id }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="form-group">
                             <label for="">Title</label>
                             <input type="text" name="title" class="form-control" value="{{ old('title', isset($account) ? $account->title : '') }}">

@@ -29,6 +29,9 @@
                 <i class="far fa-chart-bar"></i>
                 {{ config('app.name', 'Laravel') }}
             </a>
+            @isset($context)
+            <strong class="navbar-text">{{ $context->label }}</strong>
+            @endisset
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                 <span class="navbar-toggler-icon"></span>
@@ -53,7 +56,6 @@
             @else
 
                 @isset($context)
-                <h4 class="navbar-text">{{ $context->label }}</h4>
                 <ul class="navbar-nav flex-column nav-pills">
                     <li class="nav-item">
                         <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index', $context) }}">Accounts</a>
