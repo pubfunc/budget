@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Account;
+use App\Organization;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -14,12 +15,11 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Organization $org)
     {
-        $user = Auth::user();
-        $accounts = Account::where('user_id', $user->id)->get();
+        $accounts = $org->accounts()->get();
 
-        return view('account.account-index', compact('accounts', 'user'));
+        return view('account.account-index', compact('accounts'));
     }
 
     /**
@@ -27,14 +27,11 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Organization $org)
     {
         $editing = false;
 
-        $user = Auth::user();
-
-        $parentAccounts = Account::where('user_id', $user->id)
-                                ->get();
+        $parentAccounts = $org->accounts()->get();
 
         return view('account.account-form', compact('editing', 'parentAccounts'));
     }
@@ -45,9 +42,8 @@ class AccountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Organization $org, Request $request)
     {
-
         $this->validate($request, [
             'parent_account_id' => 'nullable|string',
             'title' => 'required|string|min:3',
@@ -58,13 +54,13 @@ class AccountController extends Controller
 
         $account->id = str_slug($request->title);
         $account->title = $request->title;
-        $account->user_id = Auth::user()->id;
+        $account->organization()->associate($org);
         $account->save();
 
         return redirect()
                     ->route('account.index')
                     ->with(
-                        'success_status', 
+                        'success_status',
                         sprintf("Account '%s' added", $account->title)
                     );
     }
@@ -75,13 +71,12 @@ class AccountController extends Controller
      * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function show(Account $account)
+    public function show(Organization $org, Account $account)
     {
 
         $transactions = $account->transactions()
                                 ->orderBy('date')
                                 ->paginate(20);
-
 
         $debits_sum = $account->debitTransactions()->sum('amount');
         $credits_sum = $account->creditTransactions()->sum('amount');
@@ -102,15 +97,13 @@ class AccountController extends Controller
      * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function edit(Account $account)
+    public function edit(Organization $org, Account $account)
     {
         $editing = true;
 
-        $user = Auth::user();
-
-        $parentAccounts = Account::where('user_id', $user->id)
-                                ->where('id', '!=', $account->id)
-                                ->get();
+        $parentAccounts = $org->accounts()
+                            ->where('id', '!=', $account->id)
+                            ->get();
 
         return view('account.account-form', compact('editing', 'account', 'parentAccounts'));
     }
@@ -122,7 +115,7 @@ class AccountController extends Controller
      * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Account $account)
+    public function update(Organization $org, Account $account, Request $request)
     {
         //
     }
@@ -133,7 +126,7 @@ class AccountController extends Controller
      * @param  \App\Account  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Account $account)
+    public function destroy(Organization $org, Account $account)
     {
         //
     }

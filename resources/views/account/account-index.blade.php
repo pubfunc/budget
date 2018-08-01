@@ -3,13 +3,14 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-xl-10">
 
-            <div class="card">
+            <div class="card my-2">
                 <div class="card-body">
+                    <a href="{{ route('account.create') }}" class="btn btn-primary float-right">Add Account</a>
                     <h2 class="card-title">Accounts</h2>
                 </div>
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover m-0">
                     <thead>
                         <tr>
                             <th></th>
@@ -53,7 +54,7 @@
                     </tbody>
                 </table>
                 <div class="card-footer text-right">
-                    <a href="{{ route('account.create') }}" class="btn btn-primary">Add Account</a>
+                    
                 </div>
             </div>
 

@@ -7,19 +7,17 @@ use Illuminate\Validation\Rule;
 
 use App\Statements\StatementParser;
 use App\Statement;
+use App\Organization;
 
 class StatementController extends Controller
 {
 
-    public function uploader(){
-
+    public function uploader(Organization $org){
 
         return view('statement.statement-upload');
     }
 
-    public function upload(Request $request){
-
-        $user = $this->user();
+    public function upload(Organization $org, Request $request){
 
         $request->validate([
             'format'=> ['required', Rule::in(array_keys(trans('statement.formats')))],
@@ -37,25 +35,23 @@ class StatementController extends Controller
         $statement->path = $file->store('statements');
         $statement->period_start = $statementData->attributes['period_start'];
         $statement->period_end = $statementData->attributes['period_end'];
-        $statement->user()->associate($user);
+        $statement->organization()->associate($org);
         $statement->save();
 
         return redirect()->route('statement.preview', $statement->id);
 
     }
 
-    public function preview($id){
-        $user = $this->user();
+    public function preview(Organization $org, Statement $statement){
 
-        $statement = Statement::findOrFail($id);
         $statement_data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
 
         return view('statement.statement-preview', compact('statement', 'statement_data'));
     }
 
-    public function index(){
+    public function index(Organization $org){
 
-        $statements = Statement::all();
+        $statements = $org->statements()->get();
 
         return view('statement.statement-index', compact('statements'));
     }

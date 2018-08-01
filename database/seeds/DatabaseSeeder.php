@@ -19,28 +19,32 @@ class DatabaseSeeder extends Seeder
         ]);
         // $user = App\User::findOrFail(1);
 
+        $org = factory(App\Organization::class)->create();
+
+        $org->users()->attach($user);
+
         $assetAccounts =
             factory(App\Account::class, 5)
                 ->states(App\Account::TYPE_ASSET)
                 ->make()
-                ->each(function($account) use ($user){
-                    $account->user()->associate($user)->save();
+                ->each(function($account) use ($org){
+                    $account->organization()->associate($org)->save();
                 });
 
         $liabilityAccounts =
             factory(App\Account::class, 5)
                 ->states(App\Account::TYPE_LIABILITY)
                 ->make()
-                ->each(function($account) use ($user){
-                    $account->user()->associate($user)->save();
+                ->each(function($account) use ($org){
+                    $account->organization()->associate($org)->save();
                 });
 
         $capitalAccounts =
             factory(App\Account::class, 3)
                 ->states(App\Account::TYPE_CAPITAL)
                 ->make()
-                ->each(function($account) use ($user){
-                    $account->user()->associate($user)->save();
+                ->each(function($account) use ($org){
+                    $account->organization()->associate($org)->save();
                 });
 
         $accounts = $assetAccounts->concat($liabilityAccounts)->concat($capitalAccounts);

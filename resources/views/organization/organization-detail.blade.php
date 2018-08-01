@@ -10,7 +10,8 @@
                 </div>
 
                 <div class="list-group">
-                    <a href="{{ route('account.index') }}" class="list-group-item"></a>
+                    <a href="{{ route('account.index') }}" class="list-group-item">Accounts</a>
+                    <a href="{{ route('statement.index') }}" class="list-group-item">Statements</a>
                 </div>
 
             </div>

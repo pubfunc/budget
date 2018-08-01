@@ -16,7 +16,10 @@ html, body {
     }
 
     .main {
-        padding-top: 60px;
+    }
+
+    .nav-padding {
+        height: 60px;
     }
 }
 
@@ -41,6 +44,10 @@ html, body {
 
         .main {
             margin-left: 250px;
+        }
+
+        .nav-padding {
+            display: none;
         }
     }
 

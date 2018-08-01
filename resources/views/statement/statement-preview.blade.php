@@ -23,7 +23,7 @@
                             <th>Period Start</th>
                             <td>{{ carbon($statement_data->attributes['period_start'])->toFormattedDateString() }}</td>
                             <th># Transactions</th>
-                            <td>{{ count($statement_data->transaction) }}</td>
+                            <td>{{ count($statement_data->transactions) }}</td>
                         </tr>
                         <tr>
                             <th>Period End</th>
@@ -76,7 +76,7 @@
                                 <td class="{{ $statement_data->attributes['open_balance']->getAmount()->isPositive() ? 'text-success' : 'text-danger' }}">{{ $statement_data->attributes['open_balance'] }}</td>
                             </tr>
                             @endif
-                            @foreach($statement_data->transaction as $transaction)
+                            @foreach($statement_data->transactions as $transaction)
                             <tr>
                                 <td class="text-center">
                                     <input type="checkbox" value="option1">

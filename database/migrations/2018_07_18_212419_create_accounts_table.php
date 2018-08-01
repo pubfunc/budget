@@ -18,7 +18,7 @@ class CreateAccountsTable extends Migration
             $table->increments('id');
 
             $table->string('type', 32);
-            $table->string('category', 128);
+            // $table->string('category', 128);
 
             $table->string('title', 64);
             $table->string('description')->nullable();

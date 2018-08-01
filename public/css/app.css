@@ -10483,8 +10483,8 @@ body {
   z-index: 100;
 }
 
-.app .main {
-  padding-top: 60px;
+.app .nav-padding {
+  height: 60px;
 }
 
 @media screen and (min-width: 768px) {
@@ -10513,6 +10513,10 @@ body {
 
   .app .main {
     margin-left: 250px;
+  }
+
+  .app .nav-padding {
+    display: none;
   }
 }
 

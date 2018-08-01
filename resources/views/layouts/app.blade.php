@@ -34,61 +34,66 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="sidebar-links collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav flex-column">
+            <div class="sidebar-links collapse navbar-collapse flex-column" id="navbarSupportedContent">
 
-                </ul>
-
-                <!-- Right Side Of Navbar -->
+            @guest
                 <ul class="navbar-nav flex-column nav-pills">
-                    <!-- Authentication Links -->
-                    @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link{{ is_active_route('home', ' active') }}" href="{{ route('home') }}">
-                                <i class="fas fa-home"></i>
-                            </a>
-                        </li>
-                    @elseif(isset($context))
-                        <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index', $context) }}">Accounts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index', $context) }}">Transactions</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index', $context) }}">Statements</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-
-                    @endguest
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ is_active_route('home', ' active') }}" href="{{ route('home') }}">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
                 </ul>
+            @else
+
+                @isset($context)
+                <h4 class="navbar-text">{{ $context->label }}</h4>
+                <ul class="navbar-nav flex-column nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index', $context) }}">Accounts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index', $context) }}">Transactions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index', $context) }}">Statements</a>
+                    </li>
+                </ul>
+                @endisset
+                <ul class="navbar-nav flex-column nav-pills">
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+
+            @endguest
             </div>
         </nav>
 
         <main class="main">
+
+            <div class="nav-padding"></div>
+
             @yield('content')
         </main>
     </div>

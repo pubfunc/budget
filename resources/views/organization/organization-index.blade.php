@@ -10,7 +10,7 @@
                 </div>
                 <div class="list-group">
                     @foreach($organizations as $org)
-                    <a href="{{ route('organization.show', $org->id) }}" class="list-group-item">{{ $org->label }}</a>
+                    <a href="{{ route('organization.show', $org) }}" class="list-group-item">{{ $org->label }}</a>
                     @endforeach
                     <a href="{{ route('organization.create') }}" class="list-group-item list-group-item-light">Create Organization</a>
                 </div>

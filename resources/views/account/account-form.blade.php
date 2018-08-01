@@ -50,7 +50,7 @@
                             <textarea name="description" class="form-control">{{ old('description', isset($account) ? $account->description : '') }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="">Description</label>
+                            <label for="">Type</label>
                             <select class="custom-select" name="type" id="select_type">
                                 @foreach(trans('account.types') as $id=>$type)
                                 <option value="{{ $id }}" {{ old('type', isset($account) ? $account->type : null) === $id ? 'selected' : '' }}>{{ $type['label'] }}</option>

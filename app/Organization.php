@@ -20,4 +20,12 @@ class Organization extends Model
         return $this->belongsToMany(User::class, 'organization_users');
     }
 
+    public function accounts(){
+        return $this->hasMany(Account::class);
+    }
+
+    public function statements(){
+        return $this->hasMany(Statement::class);
+    }
+
 }

@@ -6,22 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
+    use Traits\BelongsToOrganizationTrait;
 
     const TYPE_ASSET = 'asset';
     const TYPE_LIABILITY = 'liability';
-    const TYPE_CAPITAL = 'capital';
+    const TYPE_EQUITY = 'equity';
+    const TYPE_EXPENSE = 'expense';
+    const TYPE_INCOME = 'income';
 
     const TYPES = [
         self::TYPE_ASSET,
         self::TYPE_LIABILITY,
-        self::TYPE_CAPITAL
+        self::TYPE_EQUITY,
+        self::TYPE_EXPENSE,
+        self::TYPE_INCOME,
     ];
 
     public $incrementing = false;
-
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
 
     public function transactions(){
         return Transaction::forAccount($this);
