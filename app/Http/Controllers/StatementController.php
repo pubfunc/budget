@@ -21,7 +21,7 @@ class StatementController extends Controller
 
         $request->validate([
             'format'=> ['required', Rule::in(array_keys(trans('statement.formats')))],
-            'file' => 'required|file|mimetypes:application/pdf|max:100'
+            'file' => 'required|file|mimetypes:application/pdf|max:2000'
         ]);
 
         $file = $request->file('file');

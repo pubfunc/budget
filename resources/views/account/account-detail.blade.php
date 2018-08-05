@@ -21,18 +21,13 @@
                     <div class="row justify-content-around text-center my-3">
 
                         <div class="col p-4 ml-4 shadow-sm bg-light border border-primary">
-                            <h4>Credits</h4>
+                            <h4>Credit Balance</h4>
                             <p class="lead">{{ currency($credits_sum) }}</p>
                         </div>
                         <div class="col p-4 mx-2 shadow-sm bg-light border border-primary">
-                            <h4>Debits</h4>
+                            <h4>Debit Balance</h4>
                             <p class="lead">{{ currency($debits_sum) }}</p>
                         </div>
-                        <div class="col p-4 mr-4 shadow-sm bg-light border border-primary">
-                            <h4>Balance</h4>
-                            <p class="lead">{{ currency($balance) }}</p>
-                        </div>
-
                     </div>
                 </div>
                 <div class="card-footer text-right">

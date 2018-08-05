@@ -58,13 +58,13 @@
                 @isset($context)
                 <ul class="navbar-nav flex-column nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index', $context) }}">Accounts</a>
+                        <a class="nav-link{{ route_starts_with('account', ' active') }}" href="{{ route('account.index') }}">Accounts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index', $context) }}">Transactions</a>
+                        <a class="nav-link{{ route_starts_with('transaction', ' active') }}" href="{{ route('transaction.index') }}">Transactions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index', $context) }}">Statements</a>
+                        <a class="nav-link{{ route_starts_with('statement', ' active') }}" href="{{ route('statement.index') }}">Statements</a>
                     </li>
                 </ul>
                 @endisset

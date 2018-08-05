@@ -3,24 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Accounting\AccountSides;
+use App\Accounting\AccountTypes;
 
+/**
+ * "In accounting, an account is a descriptive storage unit used to collect and store information of similar nature."
+ * - https://www.accountingverse.com/accounting-basics/elements-of-accounting.html
+ */
 class Account extends Model
 {
     use Traits\BelongsToOrganizationTrait;
-
-    const TYPE_ASSET = 'asset';
-    const TYPE_LIABILITY = 'liability';
-    const TYPE_EQUITY = 'equity';
-    const TYPE_EXPENSE = 'expense';
-    const TYPE_INCOME = 'income';
-
-    const TYPES = [
-        self::TYPE_ASSET,
-        self::TYPE_LIABILITY,
-        self::TYPE_EQUITY,
-        self::TYPE_EXPENSE,
-        self::TYPE_INCOME,
-    ];
 
     public $incrementing = false;
 
@@ -34,6 +26,10 @@ class Account extends Model
 
     public function creditTransactions() {
         return $this->hasMany(Transaction::class, 'credit_account_id');
+    }
+
+    public function normalSide(){
+
     }
 
 }

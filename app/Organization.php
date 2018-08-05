@@ -28,4 +28,8 @@ class Organization extends Model
         return $this->hasMany(Statement::class);
     }
 
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+
 }

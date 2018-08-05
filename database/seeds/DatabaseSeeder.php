@@ -80,7 +80,9 @@ class DatabaseSeeder extends Seeder
         $transactions =
             factory(App\Transaction::class, 1000)
                 ->make()
-                ->each(function($transaction) use ($accounts, $faker){
+                ->each(function($transaction) use ($accounts, $faker, $org){
+                    $transaction->organization()
+                        ->associate($org);
                     $transaction->debitAccount()
                         ->associate($accounts->random());
                     $transaction->creditAccount()

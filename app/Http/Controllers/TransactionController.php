@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Transaction;
+use App\Organization;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -12,9 +13,14 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Organization $organization)
     {
-        $transactions = Transaction::where('user_id', $this->user()->id)->get();
+
+        $transactions = $organization->transactions()
+                                    ->orderBy('date', 'desc')
+                                    ->get();
+
+        $transactions->load(['debitAccount', 'creditAccount']);
 
         return view('transaction.transaction-index', compact('transactions'));
     }

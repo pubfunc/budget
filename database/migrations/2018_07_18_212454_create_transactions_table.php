@@ -20,14 +20,20 @@ class CreateTransactionsTable extends Migration
 
             $table->bigInteger('amount');
 
+            $table->unsignedInteger('organization_id');
             $table->unsignedInteger('debit_account_id')->nullable();
             $table->unsignedInteger('credit_account_id')->nullable();
 
-            $table->string('import_id', 128);
+            $table->string('import_id', 128)->nullable();
 
             $table->timestamp('date');
 
             $table->timestamps();
+
+            $table->foreign('organization_id')
+                    ->references('id')
+                    ->on('organizations')
+                    ->onDelete('cascade');
 
             $table->foreign('debit_account_id')
                     ->references('id')
