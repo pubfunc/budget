@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-use App\Statements\StatementParser;
+use App\Accounting\Statements\StatementParser;
 use App\Statement;
 use App\Organization;
 

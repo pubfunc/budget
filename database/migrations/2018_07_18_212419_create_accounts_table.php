@@ -20,6 +20,7 @@ class CreateAccountsTable extends Migration
             $table->string('title', 64);
             $table->string('description')->nullable();
             $table->string('type', 32);
+            $table->char('currency', 3);
 
             $table->unsignedInteger('organization_id');
 

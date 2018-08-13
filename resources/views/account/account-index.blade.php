@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-xl-10">
 
-            <div class="card my-2">
+            <div class="card my-4">
                 <div class="card-body">
                     <a href="{{ route('account.create') }}" class="btn btn-primary float-right">Add Account</a>
                     <h2 class="card-title">Accounts</h2>
@@ -32,7 +32,7 @@
                                         <i class="far fa-trash-alt"></i>
                                     </button>
                                 </div>
-                                <form id="form_delete_{{ snake_case($account->id) }}" action="{{ route('account.destroy', $account->id) }}">
+                                <form id="form_delete_{{ $account->id }}" action="{{ route('account.destroy', $account->id) }}">
                                     @method('DELETE')
                                     {{ csrf_field() }}
                                 </form>

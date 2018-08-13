@@ -2,23 +2,27 @@
 
 return [
     'types' => [
-        App\Account::TYPE_ASSET => [
+        App\Accounting\AccountTypes::ASSET => [
             'label' => 'Asset',
             'icon' => 'fas fa-money-check-alt'
         ],
-        App\Account::TYPE_LIABILITY => [
+        App\Accounting\AccountTypes::LIABILITY => [
             'label' => 'Liability',
             'icon' => 'fas fa-credit-card'
         ],
-        App\Account::TYPE_EQUITY => [
-            'label' => 'Equity',
+        App\Accounting\AccountTypes::EQUITY_CONT => [
+            'label' => 'Equity Contribution',
             'icon' => 'fas fa-building'
         ],
-        App\Account::TYPE_INCOME => [
+        App\Accounting\AccountTypes::EQUITY_WITH => [
+            'label' => 'Equity Withdrawal',
+            'icon' => 'fas fa-building'
+        ],
+        App\Accounting\AccountTypes::INCOME => [
             'label' => 'Income',
             'icon' => 'fas fa-piggy-bank'
         ],
-        App\Account::TYPE_EXPENSE => [
+        App\Accounting\AccountTypes::EXPENSE => [
             'label' => 'Expense',
             'icon' => 'fas fa-money-bill-alt'
         ],

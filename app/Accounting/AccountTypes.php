@@ -1,4 +1,4 @@
-<?php
+<?php namespace App\Accounting;
 
 use InvalidArgumentException;
 
@@ -10,15 +10,6 @@ class AccountTypes {
     const EQUITY_WITH = 'EQUITY_WITH';
     const EXPENSE = 'EXPENSE';
     const INCOME = 'INCOME';
-
-    const ALL = [
-        self::ASSET,
-        self::LIABILITY,
-        self::EQUITY_CONT,
-        self::EQUITY_WITH,
-        self::INCOME,
-        self::EXPENSE,
-    ];
 
     public static function normalBalanceSide($type){
         switch($type){
@@ -32,6 +23,17 @@ class AccountTypes {
                 return AccountSides::CREDIT;
         }
         throw new InvalidArgumentException("Invalid AccountType '{$type}'");
+    }
+
+    public static function all(){
+        return [
+            self::ASSET,
+            self::LIABILITY,
+            self::EQUITY_CONT,
+            self::EQUITY_WITH,
+            self::INCOME,
+            self::EXPENSE,
+        ];
     }
 
 }

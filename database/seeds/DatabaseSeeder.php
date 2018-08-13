@@ -7,20 +7,20 @@ class DatabaseSeeder extends Seeder
 {
 
     const ACCOUNTS_DATA = [
-        App\Account::TYPE_ASSET => [
+        App\Accounting\AccountTypes::ASSET => [
             ['title' => 'Cheque Account'],
             ['title' => 'Savings Account'],
         ],
-        App\Account::TYPE_LIABILITY => [
+        App\Accounting\AccountTypes::LIABILITY => [
             ['title' => 'Credit Card'],
         ],
-        App\Account::TYPE_INCOME => [
+        App\Accounting\AccountTypes::INCOME => [
             ['title' => 'Saleries & Bonuses'],
             ['title' => 'Interest Income'],
             ['title' => 'Dividend Income'],
             ['title' => 'Winnings'],
         ],
-        App\Account::TYPE_EXPENSE => [
+        App\Accounting\AccountTypes::EXPENSE => [
             ['title' => 'Alcohol & Tobacco'],
             ['title' => 'Bank Fees'],
             ['title' => 'Car Loan'],
@@ -41,6 +41,12 @@ class DatabaseSeeder extends Seeder
             ['title' => 'Vehicle Repairs & Maintenence'],
             ['title' => 'Utilities'],
             ['title' => 'Home Improvement & Maintenance'],
+        ],
+        App\Accounting\AccountTypes::EQUITY_WITH => [
+            ['title' => 'Owner Capital Withdrawal'],
+        ],
+        App\Accounting\AccountTypes::EQUITY_CONT => [
+            ['title' => 'Owner Capital Contribution'],
         ],
     ];
 
@@ -77,18 +83,18 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        $transactions =
-            factory(App\Transaction::class, 1000)
-                ->make()
-                ->each(function($transaction) use ($accounts, $faker, $org){
-                    $transaction->organization()
-                        ->associate($org);
-                    $transaction->debitAccount()
-                        ->associate($accounts->random());
-                    $transaction->creditAccount()
-                        ->associate($accounts->random());
-                    $transaction->save();
-                });
+        // $transactions =
+        //     factory(App\Transaction::class, 1000)
+        //         ->make()
+        //         ->each(function($transaction) use ($accounts, $faker, $org){
+        //             $transaction->organization()
+        //                 ->associate($org);
+        //             $transaction->debitAccount()
+        //                 ->associate($accounts->random());
+        //             $transaction->creditAccount()
+        //                 ->associate($accounts->random());
+        //             $transaction->save();
+        //         });
 
 
     }

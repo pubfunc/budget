@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-sm-6">
 
-            <div class="card">
+            <div class="card my-4">
 
                 <form
                     id="form_statement_upload"
@@ -32,7 +32,7 @@
 
                     <div class="form-group">
                         <select name="format" class="form-control" id="select_format">
-                            <option>Select Statement Format</option>
+                            <option value="">Select Statement Format</option>
                             @foreach(trans('statement.formats') as $key=>$label)
                             <option value="{{ $key }}" {{ old('format') === $key ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach

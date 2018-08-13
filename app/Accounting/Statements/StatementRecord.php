@@ -1,8 +1,8 @@
-<?php namespace App\Statements;
+<?php namespace App\Accounting\Statements;
 
 use Brick\Money\Money;
 
-class StatementData {
+class StatementRecord {
 
     public $date;
     public $description;
