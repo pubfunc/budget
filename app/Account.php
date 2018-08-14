@@ -14,8 +14,6 @@ class Account extends Model
 {
     use Traits\BelongsToOrganizationTrait;
 
-    public $incrementing = false;
-
     public function transactions(){
         return Transaction::forAccount($this);
     }

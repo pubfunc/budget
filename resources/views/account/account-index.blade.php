@@ -20,9 +20,9 @@
                         @foreach($grouped_accounts as $account)
                         <tr>
                             <td width="300"><a class="btn btn-sm btn-primary btn-block text-left" href="{{ route('account.show', [$account->id]) }}">{{ $account->title }}</a></td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
+                            <td class="text-right" width="100">0</td>
+                            <td class="text-right" width="100">0</td>
+                            <td class="text-right" width="100">0</td>
                             <td class="text-right">
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a class="btn btn-warning btn-sm" href="{{ route('account.edit', $account->id) }}">

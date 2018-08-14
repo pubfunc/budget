@@ -3,7 +3,7 @@
         @foreach($accountOptions as $group=>$options)
         <optgroup label="{{ $group }}">
             @foreach($options as $i=>$account)
-            <option value="{{ $account->id }}"{{ old($name, $value) === $account->id ? ' selected' : '' }}>{{ $account->title }}</option>
+            <option value="{{ $account->id }}"{{ old($name, $value) == $account->id ? ' selected' : '' }}>{{ $account->title }}</option>
             @endforeach
         </optgroup>
         @endforeach

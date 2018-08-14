@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Accounting\AccountTypes;
+use App\Accounting\AccountSides;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -49,5 +51,21 @@ class Transaction extends Model
 
     public function creditAccount(){
         return $this->belongsTo(Account::class, 'credit_account_id');
+    }
+
+    public function getDebitAmountAttribute(){
+
+        if($this->debit_account_id){
+            return AccountTypes::normalBalanceSide($this->debitAccount->type) === AccountSides::DEBIT ? $this->amount : -$this->amount;
+        }
+
+    }
+
+    public function getCreditAmountAttribute(){
+
+        if($this->credit_account_id){
+            return AccountTypes::normalBalanceSide($this->creditAccount->type) === AccountSides::CREDIT ? $this->amount : -$this->amount;
+        }
+
     }
 }

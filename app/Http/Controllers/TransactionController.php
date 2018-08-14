@@ -74,7 +74,7 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaction $transaction)
+    public function show(Organization $organization, Transaction $transaction)
     {
         //
     }
@@ -85,9 +85,14 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaction $transaction)
+    public function edit(Organization $organization, Transaction $transaction)
     {
-        //
+        $accountOptions = $organization->accounts()
+                                        ->orderBy('title')
+                                        ->get()
+                                        ->groupBy('type');
+
+        return view('transaction.transaction-form', compact('accountOptions', 'transaction'));
     }
 
     /**
@@ -97,9 +102,21 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaction $transaction)
+    public function update(Organization $organization, Transaction $transaction, Request $request)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'description' => 'required|string|min:3',
+            'amount' => 'required|integer|min:0',
+            'debit_account_id' => ['required', Rule::in($organization->accounts->pluck('id'))],
+            'credit_account_id' => ['required', Rule::in($organization->accounts->pluck('id'))]
+        ]);
+
+        $transaction->fill($request->all());
+        $transaction->organization()->associate($organization);
+        $transaction->save();
+
+        return redirect()->route('transaction.index')->with('success_status', 'Transaction created.');
     }
 
     /**
@@ -108,7 +125,7 @@ class TransactionController extends Controller
      * @param  \App\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Organization $organization, Transaction $transaction)
     {
         //
     }
