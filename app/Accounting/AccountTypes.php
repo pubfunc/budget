@@ -36,4 +36,10 @@ class AccountTypes {
         ];
     }
 
+    public static function map(){
+        return array_map(function($type){
+            return $type['label'];
+        }, trans('account.types'));
+    }
+
 }

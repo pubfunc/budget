@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Transaction;
 use App\Organization;
+
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TransactionController extends Controller
 {
@@ -30,9 +32,16 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Organization $organization)
     {
-        //
+
+        $accountOptions = $organization->accounts()
+                                        ->orderBy('title')
+                                        ->get()
+                                        ->groupBy('type');
+        // dd($accountOptions);
+
+        return view('transaction.transaction-form', compact('accountOptions'));
     }
 
     /**
@@ -41,9 +50,22 @@ class TransactionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Organization $organization, Request $request)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'description' => 'required|string|min:3',
+            'amount' => 'required|integer|min:0',
+            'debit_account_id' => ['required', Rule::in($organization->accounts->pluck('id'))],
+            'credit_account_id' => ['required', Rule::in($organization->accounts->pluck('id'))]
+        ]);
+
+        $transaction = new Transaction;
+        $transaction->fill($request->all());
+        $transaction->organization()->associate($organization);
+        $transaction->save();
+
+        return redirect()->route('transaction.index')->with('success_status', 'Transaction created.');
     }
 
     /**

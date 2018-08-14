@@ -8,51 +8,56 @@
             <div class="card my-2">
                 <div class="card-body">
                     <h2 class="card-title">
-                        @if($editing)
+                        @isset($account)
                         Edit Account
                         @else
                         Add Account
-                        @endif
+                        @endisset
                     </h2>
-
-                    @isset($errors)
-                    <ul class="list-unstyled text-danger">
-                        @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    @endisset
 
                     <form 
                         id="form_account"
-                        action="{{ $editing ? route('account.update', [$account->id]) : route('account.store') }}" 
+                        action="{{ isset($account) ? route('account.update', [$account->id]) : route('account.store') }}"
                         method="POST">
                         {{ csrf_field() }}
 
-                        @if($editing)
+                        @isset($account)
                         @method('PUT')
                         @endif
 
-                        <div class="form-group">
-                            <label for="">Title</label>
-                            <input type="text" name="title" class="form-control" value="{{ old('title', isset($account) ? $account->title : '') }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Description</label>
-                            <textarea name="description" class="form-control">{{ old('description', isset($account) ? $account->description : '') }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Type</label>
-                            <select class="custom-select" name="type" id="select_type">
-                                @foreach(trans('account.types') as $id=>$type)
-                                <option value="{{ $id }}" {{ old('type', isset($account) ? $account->type : null) === $id ? 'selected' : '' }}>{{ $type['label'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @component('ui.form.form-group', [
+                            'label' => 'Title',
+                            'name' => 'title',
+                            'value' => isset($account) ? $account->title : ''
+                        ])
+                        @endcomponent
+                        @component('ui.form.form-group', [
+                            'type' => 'textarea',
+                            'label' => 'Description',
+                            'name' => 'description',
+                            'value' => isset($account) ? $account->description : ''
+                        ])
+                        @endcomponent
+                        @component('ui.form.form-group', [
+                            'type' => 'select',
+                            'label' => 'Type',
+                            'name' => 'type',
+                            'value' => isset($account) ? $account->type : App\Accounting\AccountTypes::EXPENSE,
+                            'map' => App\Accounting\AccountTypes::map(),
+                        ])
+                        @endcomponent
+                        @component('ui.form.form-group', [
+                            'type' => 'select',
+                            'label' => 'Currency',
+                            'name' => 'currency',
+                            'value' => isset($account) ? $account->currency : 'ZAR',
+                            'map' => App\Accounting\Currencies::map(),
+                        ])
+                        @endcomponent
                     </form>
                 </div>
                 <div class="card-footer text-right">
-                    <a class="btn btn-default" href="{{ url()->previous() }}">Cancel</a>
+                    <a class="btn btn-default" href="{{ route('account.index') }}">Cancel</a>
                     <button type="submit" form="form_account" class="btn btn-primary">Save</button>
                 </div>
             </div>

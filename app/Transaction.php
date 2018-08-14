@@ -21,6 +21,15 @@ class Transaction extends Model
 
     use Traits\BelongsToOrganizationTrait;
 
+    protected $fillable = [
+        'description',
+        'amount',
+        'date',
+        'debit_account_id',
+        'credit_account_id',
+        'import_id',
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at',

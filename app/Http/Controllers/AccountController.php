@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Account;
+use App\Accounting\AccountTypes;
+use App\Accounting\Currencies;
 use App\Organization;
 use Illuminate\Http\Request;
 
@@ -48,7 +50,8 @@ class AccountController extends Controller
         $this->validate($request, [
             'title' => 'required|string|min:3',
             'description' => 'nullable|string',
-            'type' => ['required', Rule::in(Account::TYPES)]
+            'currency' => ['required', Rule::in(Currencies::keys())],
+            'type' => ['required', Rule::in(AccountTypes::all())]
         ]);
 
         $account = new Account();
@@ -56,11 +59,12 @@ class AccountController extends Controller
         $account->title = $request->title;
         $account->description = $request->description;
         $account->type = $request->type;
+        $account->currency = $request->currency;
         $account->organization()->associate($org);
         $account->save();
 
         return redirect()
-                    ->route('account.index')
+                    ->route('account.detail', $account)
                     ->with(
                         'success_status',
                         sprintf("Account '%s' added", $account->title)
@@ -101,13 +105,8 @@ class AccountController extends Controller
      */
     public function edit(Organization $org, Account $account)
     {
-        $editing = true;
 
-        $parentAccounts = $org->accounts()
-                            ->where('id', '!=', $account->id)
-                            ->get();
-
-        return view('account.account-form', compact('editing', 'account', 'parentAccounts'));
+        return view('account.account-form', compact('account'));
     }
 
     /**
@@ -119,7 +118,26 @@ class AccountController extends Controller
      */
     public function update(Organization $org, Account $account, Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|string|min:3',
+            'description' => 'nullable|string',
+            'currency' => ['required', Rule::in(Currencies::keys())],
+            'type' => ['required', Rule::in(AccountTypes::all())]
+        ]);
+
+        $account->title = $request->title;
+        $account->description = $request->description;
+        $account->type = $request->type;
+        $account->currency = $request->currency;
+        $account->organization()->associate($org);
+        $account->save();
+
+        return redirect()
+                    ->route('account.show', $account)
+                    ->with(
+                        'success_status',
+                        sprintf("Account '%s' added", $account->title)
+                    );
     }
 
     /**

@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <a href="{{ route('account.create') }}" class="btn btn-warning">
+                    <a href="{{ route('account.edit', $account) }}" class="btn btn-warning">
                         <i class="far fa-edit"></i>
                         Edit Account
                     </a>

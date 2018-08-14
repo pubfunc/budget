@@ -14,8 +14,8 @@
             <td>{{ $trans->date->format('Y-m-d') }}</td>
             <td>{{ $trans->description }}</td>
             <td>{{ $trans->amount }}</td>
-            <td>{{ $trans->debit_account_id }}</td>
-            <td>{{ $trans->credit_account_id }}</td>
+            <td>{{ $trans->debitAccount->title }}</td>
+            <td>{{ $trans->creditAccount->title }}</td>
         </tr>
         @endforeach
     </tbody>
