@@ -1,7 +1,12 @@
 <?php
 
-function currency($amount){
-    return 'R ' . number_format($amount / 100, 2);
+function money($amount, $currency = 'ZAR'){
+
+    if(is_numeric($amount)){
+        return Brick\Money\Money::ofMinor($amount, $currency);
+    }
+    return null;
+
 }
 
 function carbon($timestamp = null){

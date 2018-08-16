@@ -17,11 +17,11 @@
             <!-- <td>{{ $trans->amount }}</td> -->
             <td>
                 {{ $trans->debitAccount->title }}<br>
-                <small class="{{ $trans->debit_amount < 0 ? 'text-danger' : 'text-success' }}">{{ $trans->debit_amount }}</small>
+                <small class="{{ $trans->debit_amount < 0 ? 'text-danger' : 'text-success' }}">{{ money($trans->debit_amount) }}</small>
             </td>
             <td>
                 {{ $trans->creditAccount->title }}<br>
-                <small class="{{ $trans->credit_amount < 0 ? 'text-danger' : 'text-success' }}">{{ $trans->credit_amount }}</small>
+                <small class="{{ $trans->credit_amount < 0 ? 'text-danger' : 'text-success' }}">{{ money($trans->credit_amount) }}</small>
             </td>
             <td class="text-right">
                 <div class="btn-group" role="group">

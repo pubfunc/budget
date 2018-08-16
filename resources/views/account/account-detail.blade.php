@@ -22,11 +22,11 @@
 
                         <div class="col p-4 ml-4 shadow-sm bg-light border border-primary">
                             <h4>Credit Balance</h4>
-                            <p class="lead">{{ currency($credits_sum) }}</p>
+                            <p class="lead">{{ money($credits_sum) }}</p>
                         </div>
                         <div class="col p-4 mx-2 shadow-sm bg-light border border-primary">
                             <h4>Debit Balance</h4>
-                            <p class="lead">{{ currency($debits_sum) }}</p>
+                            <p class="lead">{{ money($debits_sum) }}</p>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-lg-10">
 
             <div class="card shadow-sm">
                 <div class="card-body">

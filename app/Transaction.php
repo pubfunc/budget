@@ -54,11 +54,9 @@ class Transaction extends Model
     }
 
     public function getDebitAmountAttribute(){
-
         if($this->debit_account_id){
             return AccountTypes::normalBalanceSide($this->debitAccount->type) === AccountSides::DEBIT ? $this->amount : -$this->amount;
         }
-
     }
 
     public function getCreditAmountAttribute(){
@@ -66,6 +64,5 @@ class Transaction extends Model
         if($this->credit_account_id){
             return AccountTypes::normalBalanceSide($this->creditAccount->type) === AccountSides::CREDIT ? $this->amount : -$this->amount;
         }
-
     }
 }

@@ -20,7 +20,13 @@ class AccountController extends Controller
      */
     public function index(Organization $org)
     {
-        $accounts = $org->accounts()->get();
+        $accounts = $org->accounts()
+                        ->joinBalances()
+                        ->orderBy('type', 'asc')
+                        ->orderBy('title', 'asc')
+                        ->get();
+
+        // dd($accounts->toArray());
 
         return view('account.account-index', compact('accounts'));
     }
@@ -84,8 +90,12 @@ class AccountController extends Controller
                                 ->orderBy('date')
                                 ->paginate(20);
 
-        $debits_sum = $account->debitTransactions()->sum('amount');
-        $credits_sum = $account->creditTransactions()->sum('amount');
+        $debits_sum = $account->debitTransactions()
+                            ->sum('amount');
+
+        $credits_sum = $account->creditTransactions()
+                            ->sum('amount');
+
         $balance = $debits_sum - $credits_sum;
 
         return view('account.account-detail', compact(

@@ -20,8 +20,12 @@
                         @foreach($grouped_accounts as $account)
                         <tr>
                             <td width="300"><a class="btn btn-sm btn-primary btn-block text-left" href="{{ route('account.show', [$account->id]) }}">{{ $account->title }}</a></td>
-                            <td class="text-right" width="100">0</td>
-                            <td class="text-right" width="100">0</td>
+                            <td class="text-right {{ $account->debits_amount < 0 ? 'text-danger' : 'text-success' }}" width="100">
+                                {{ money($account->debits_amount) }}
+                            </td>
+                            <td class="text-right {{ $account->credits_amount < 0 ? 'text-danger' : 'text-success' }}" width="100">
+                                {{ money($account->credits_amount) }}
+                            </td>
                             <td class="text-right" width="100">0</td>
                             <td class="text-right">
                                 <div class="btn-group" role="group" aria-label="Basic example">
