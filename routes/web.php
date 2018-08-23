@@ -52,6 +52,7 @@ Route::group(['prefix' => 'org/{organization}', 'middleware' => ['auth', 'contex
     Route::get('statement/upload', 'StatementController@uploader')->name('statement.uploader');
     Route::post('statement/upload', 'StatementController@upload')->name('statement.upload');
     Route::get('statement/{statement}', 'StatementController@preview')->name('statement.preview');
+    Route::post('statement/{statement}/import', 'StatementController@import')->name('statement.import');
     Route::delete('statement/{statement}', 'StatementController@destroy')->name('statement.destroy');
     Route::delete('statement/{statement}/download', 'StatementController@download')->name('statement.download');
 

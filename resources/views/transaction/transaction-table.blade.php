@@ -16,12 +16,16 @@
             <td><small>{{ $trans->description }}</small></td>
             <!-- <td>{{ $trans->amount }}</td> -->
             <td>
+                @if($trans->debitAccount)
                 {{ $trans->debitAccount->title }}<br>
                 <small class="{{ $trans->debit_amount < 0 ? 'text-danger' : 'text-success' }}">{{ money($trans->debit_amount) }}</small>
+                @endif
             </td>
             <td>
+                @if($trans->creditAccount)
                 {{ $trans->creditAccount->title }}<br>
                 <small class="{{ $trans->credit_amount < 0 ? 'text-danger' : 'text-success' }}">{{ money($trans->credit_amount) }}</small>
+                @endif
             </td>
             <td class="text-right">
                 <div class="btn-group" role="group">

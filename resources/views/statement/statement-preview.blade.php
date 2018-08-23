@@ -15,27 +15,40 @@
                     <tbody>
                         <tr>
                             <th>Account Title</th>
-                            <td>{{ $statement_data->attributes['account_title'] }}</td>
+                            <td>{{ $data->account_title }}</td>
                             <th>Account #</th>
-                            <td>{{ $statement_data->attributes['account_number'] }}</td>
+                            <td>{{ $data->account_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Account Type</th>
+                            <td>{{ $data->account_type }}</td>
+                            <th>Balance Side</th>
+                            <td>{{ $data->balance_side }}</td>
                         </tr>
                         <tr>
                             <th>Period Start</th>
-                            <td>{{ carbon($statement_data->attributes['period_start'])->toFormattedDateString() }}</td>
+                            <td>{{ carbon($data->period_start)->toFormattedDateString() }}</td>
                             <th># Transactions</th>
-                            <td>{{ count($statement_data->transactions) }}</td>
+                            <td>{{ count($data->transactions) }}</td>
                         </tr>
                         <tr>
                             <th>Period End</th>
-                            <td>{{ carbon($statement_data->attributes['period_end'])->toFormattedDateString() }} ({{ carbon($statement_data->attributes['period_end'])->diffForHumans() }})</td>
+                            <td>{{ carbon($data->period_end)->toFormattedDateString() }} ({{ carbon($data->period_end)->diffForHumans() }})</td>
                             <th>Currency</th>
-                            <td>{{ $statement_data->attributes['currency'] }}</td>
+                            <td>{{ $data->currency }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="card-footer text-right">
-                    <button class="btn btn-danger">Delete</button>
-                    <button class="btn btn-primary">Import</button>
+                    <form action="{{ route('statement.import', ['statement' => $statement]) }}" method="POST">
+                        {{ csrf_field() }}
+                        <select name="account_id" id="">
+                            @foreach($importAccounts as $account)
+                            <option value="{{ $account->id }}">{{ $account->title }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </form>
                 </div>
             </div>
 
@@ -67,33 +80,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if($statement_data->attributes['open_balance'])
+                            @if($data->open_balance)
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td>Opening Balance</td>
                                 <td></td>
-                                <td class="{{ $statement_data->attributes['open_balance']->getAmount()->isPositive() ? 'text-success' : 'text-danger' }}">{{ $statement_data->attributes['open_balance'] }}</td>
+                                <td>{{ money($data->open_balance, $data->currency) }}</td>
                             </tr>
                             @endif
-                            @foreach($statement_data->transactions as $transaction)
+                            @foreach($data->records() as $record)
                             <tr>
                                 <td class="text-center">
                                     <input type="checkbox" value="option1">
                                 </td>
-                                <td class="text-nowrap">{{ $transaction['date']->toDateString() }}</td>
-                                <td><samp>{{ $transaction['description'] }}</samp></td>
-                                <td class="{{ $transaction['side'] === 'credit' ? 'text-success' : 'text-danger' }}">{{ $transaction['amount'] }}</td>
-                                <td>{{ $transaction['balance'] }}</td>
+                                <td class="text-nowrap">{{ $record['date']->toDateString() }}</td>
+                                <td class="text-monospace small">{{ $record['description'] }}</td>
+                                <td class="text-nowrap {{ $record['normal'] >= 0 ? 'text-success' : 'text-danger' }}">{{ money($record['normal'], $data->currency) }}</td>
+                                <td class="text-nowrap">{{ money($record['balance'], $data->currency) }}</td>
                             </tr>
                             @endforeach
-                            @if($statement_data->attributes['close_balance'])
+                            @if($data->close_balance)
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td>Closing Balance</td>
                                 <td></td>
-                                <td class="{{ $statement_data->attributes['close_side'] === 'credit' ? 'text-success' : 'text-danger' }}">{{ $statement_data->attributes['close_balance'] }}</td>
+                                <td>{{ money($data->close_balance, $data->currency) }}</td>
                             </tr>
                             @endif
                         </tbody>
@@ -103,7 +116,7 @@
                 </div>
                 <div class="card tab-pane" id="preview_text_tab">
                     <pre class="card-body">
-                        <samp class="small">{{ $statement_data->text }}</samp>
+                        <samp class="small">{{ $data->text }}</samp>
                     </pre>
                 </div>
             </div>

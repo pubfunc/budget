@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 use App\Accounting\Statements\StatementParser;
+use App\Accounting\AccountSides;
 use App\Statement;
 use App\Organization;
+use App\Transaction;
 
 class StatementController extends Controller
 {
@@ -29,12 +31,12 @@ class StatementController extends Controller
         $statementData = (new StatementParser())->parseFile($request->format, $file->path());
 
         $statement = new Statement();
-        $statement->title = $statementData->attributes['title'];
+        $statement->title = $statementData->title;
         $statement->filename = $file->getClientOriginalName();
         $statement->format = $request->format;
         $statement->path = $file->store('statements');
-        $statement->period_start = $statementData->attributes['period_start'];
-        $statement->period_end = $statementData->attributes['period_end'];
+        $statement->period_start = $statementData->period_start;
+        $statement->period_end = $statementData->period_end;
         $statement->organization()->associate($org);
         $statement->save();
 
@@ -44,9 +46,35 @@ class StatementController extends Controller
 
     public function preview(Organization $org, Statement $statement){
 
-        $statement_data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
+        $data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
 
-        return view('statement.statement-preview', compact('statement', 'statement_data'));
+        $importAccounts = $org->accounts()->ofType($data->account_type)->get();
+
+        return view('statement.statement-preview', compact('statement', 'data', 'importAccounts'));
+    }
+
+    public function import(Organization $org, Statement $statement, Request $request){
+
+        $account = $org->accounts()->findOrFail($request->account_id);
+
+        $data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
+
+        foreach($data->records() as $record){
+            $transaction = new Transaction();
+            $transaction->organization()->associate($org);
+            $transaction->date = $record['date'];
+            $transaction->description = $record['description'];
+            $transaction->amount = $record['amount'];
+            if($record['side'] === AccountSides::DEBIT){
+                $transaction->debitAccount()->associate($account);
+            }elseif($record['side'] === AccountSides::CREDIT){
+                $transaction->creditAccount()->associate($account);
+            }
+
+            $transaction->save();
+        }
+
+        return redirect()->route('transaction.index');
     }
 
     public function index(Organization $org){

@@ -1,6 +1,8 @@
 <?php namespace App\Accounting\Statements\Parsers;
 
 use App\Accounting\Statements\Statement;
+use App\Accounting\AccountTypes;
+use App\Accounting\AccountSides;
 
 use InvalidArgumentException;
 
@@ -22,6 +24,12 @@ class FNBDebitCardPDFStatementParser extends AbstractPDFStatementParser implemen
 
         $number_format = NumberFormatter::create('en_ZA', NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
 
+        $account_type = AccountTypes::ASSET;
+        $balance_side = AccountTypes::normalBalanceSide($account_type);
+        $records = [];
+        $attributes = [];
+        $currency = 'ZAR';
+
         // parse period
         if($matches = $this->match(self::FNB_DEBIT_PERIOD_REGEX)){
             $period_start = Carbon::parse($matches[1]);
@@ -36,11 +44,11 @@ class FNBDebitCardPDFStatementParser extends AbstractPDFStatementParser implemen
             foreach($matches as $match){
                 if($match[1] === 'Opening Balance'){
                     $open_balance = $this->parseAmount($match[2]);
-                    $open_side = isset($match[3]) && $match[3] === 'Cr' ? 'credit' : 'debit';
+                    $open_side = isset($match[3]) && $match[3] === 'Cr' ? AccountSides::DEBIT : AccountSides::CREDIT;
                 }
                 if($match[1] === 'Closing Balance'){
                     $close_balance = $this->parseAmount($match[2]);
-                    $close_side = isset($match[3]) && $match[3] === 'Cr' ? 'credit' : 'debit';
+                    $close_side = isset($match[3]) && $match[3] === 'Cr' ? AccountSides::DEBIT : AccountSides::CREDIT;
                 }
             }
         }else{
@@ -50,7 +58,7 @@ class FNBDebitCardPDFStatementParser extends AbstractPDFStatementParser implemen
         // parse transactions
         if($matches = $this->matchAll(self::FNB_DEBIT_TRANSACTION_REGEX)){
             $this->transactions = [];
-            $balance = ($open_balance * ($open_side === 'credit' ? 1 : -1));
+            $balance = ($open_balance * ($open_side === $balance_side ? 1 : -1));
             foreach($matches as $i=>$match){
 
                 if(!($amount_matches = $this->match(self::FNB_AMOUNT_REGEX, $match[3]))){
@@ -58,7 +66,7 @@ class FNBDebitCardPDFStatementParser extends AbstractPDFStatementParser implemen
                 }
 
                 $amount = $this->parseAmount($amount_matches[1].$amount_matches[2]);
-                $side = isset($amount_matches[3]) && $amount_matches[3] === 'Cr' ? 'credit' : 'debit';
+                $side = isset($amount_matches[3]) && $amount_matches[3] === 'Cr' ? AccountSides::DEBIT : AccountSides::CREDIT;
 
                 $date = Carbon::parse($match[1])->year($period_start->year);
 
@@ -66,17 +74,19 @@ class FNBDebitCardPDFStatementParser extends AbstractPDFStatementParser implemen
                     $date->addYear();
                 }
 
-                $balance += ($amount * ($side === 'credit' ? 1 : -1));
+                $normal = ($amount * ($side === $balance_side ? 1 : -1));
+                $balance += $normal;
 
-                $transaction = [
+                $record = [
                     'date' => $date,
                     'description' => $match[2],
-                    'amount' => Money::ofMinor($amount, $currency),
+                    'amount' => $amount,
                     'side' => $side,
-                    'balance' => Money::ofMinor($balance, $currency)
+                    'normal' => $normal,
+                    'balance' => $balance
                 ];
 
-                $this->transactions[] = $transaction;
+                $records[] = $record;
             }
         }else{
             throw new InvalidArgumentException('No transactions found for statement.');
@@ -84,29 +94,36 @@ class FNBDebitCardPDFStatementParser extends AbstractPDFStatementParser implemen
 
         // parse account title and number
         if($matches = $this->match(self::FNB_ACCOUNT_REGEX)){
-            $this->attributes['account_title'] = $matches[1];
-            $this->attributes['account_number'] = $matches[2];
+            $attributes['account_title'] = $matches[1];
+            $attributes['account_number'] = $matches[2];
         }
 
         // parse statement title and number
         if($matches = $this->match(self::FNB_BBST_REGEX)){
-            $this->attributes['number'] = $matches[1] . '-' . $matches[2];
+            $attributes['number'] = $matches[1] . '-' . $matches[2];
         }
 
-        $this->attributes['period_start'] = $period_start;
-        $this->attributes['period_end'] = $period_end;
+        $attributes['currency'] = $currency;
+        $attributes['account_type'] = $account_type;
+        $attributes['balance_side'] = $balance_side;
 
-        $this->attributes['open_balance'] = Money::ofMinor($open_balance, $currency);
-        $this->attributes['open_side'] = $open_side;
-        $this->attributes['close_balance'] = Money::ofMinor($close_balance, $currency);
-        $this->attributes['close_side'] = $close_side;
+        $attributes['period_start'] = $period_start;
+        $attributes['period_end'] = $period_end;
 
-        $this->attributes['title'] =
+        $attributes['open_balance'] = $open_balance;
+        $attributes['open_side'] = $open_side;
+        $attributes['close_balance'] = $close_balance;
+        $attributes['close_side'] = $close_side;
+        $attributes['text'] = $this->text;
+
+        $attributes['title'] =
             sprintf('%s #%s BBST%s',
-                $this->attributes['account_title'],
-                $this->attributes['account_number'],
-                $this->attributes['number']
+                $attributes['account_title'],
+                $attributes['account_number'],
+                $attributes['number']
             );
+
+        return new Statement($attributes, $records);
     }
 
     private function parseBalances(){

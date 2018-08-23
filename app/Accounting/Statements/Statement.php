@@ -10,10 +10,16 @@ class Statement implements ArrayAccess
 {
 
     protected $attributes = [];
+    protected $records = [];
 
-    public function __construct(array $attributes = [])
+    public function __construct(array $attributes, array $records)
     {
         $this->attributes = $attributes;
+        $this->records = $records;
+    }
+
+    public function records(){
+        return collect($this->records);
     }
 
     /**

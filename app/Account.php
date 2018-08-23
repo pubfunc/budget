@@ -40,6 +40,10 @@ class Account extends Model
 
     }
 
+    public function scopeOfType($query, string $type){
+        $query->where('type', $type);
+    }
+
     public function getDebitsAmountAttribute(){
         if($this->sum_debits !== null){
             return $this->normalSide() === AccountSides::DEBIT ? $this->sum_debits : -$this->sum_debits;
