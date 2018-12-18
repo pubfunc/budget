@@ -4,15 +4,6 @@ use Spatie\PdfToText\Pdf;
 
 class AbstractPDFStatementParser {
 
-    protected $attributes = [
-        'title' => null,
-        'number' => null,
-        'account_title' => null,
-        'account_number' => null,
-        'open_balance' => null,
-        'close_balance' => null,
-    ];
-
     protected $text = null;
     protected $path = null;
 

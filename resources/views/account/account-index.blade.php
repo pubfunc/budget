@@ -15,16 +15,28 @@
                 <div class="card-body mt-3">
                     <h3 class="card-title">{{ trans('account.types.' . $type . '.label') }}</h3>
                 </div>
+
                 <table class="table table-striped table-hover m-0 table-sm">
                     <tbody>
                         @foreach($grouped_accounts as $account)
                         <tr>
                             <td width="300"><a class="btn btn-sm btn-primary btn-block text-left" href="{{ route('account.show', [$account->id]) }}">{{ $account->title }}</a></td>
-                            <td class="text-right {{ $account->debits_amount < 0 ? 'text-danger' : 'text-success' }}" width="100">
-                                {{ money($account->debits_amount) }}
-                            </td>
-                            <td class="text-right {{ $account->credits_amount < 0 ? 'text-danger' : 'text-success' }}" width="100">
-                                {{ money($account->credits_amount) }}
+                            <td width="100">
+                                <div>
+                                    <span class="text-right {{ $account->balance_amount < 0 ? 'text-danger' : 'text-success' }}">
+                                        {{ money($account->balance_amount) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <small class="text-right {{ $account->sum_debits_amount < 0 ? 'text-danger' : 'text-success' }}">
+                                        {{ money($account->sum_debits_amount) }}
+                                    </small>
+                                </div>
+                                <div>
+                                    <small class="text-right {{ $account->sum_credits_amount < 0 ? 'text-danger' : 'text-success' }}">
+                                        {{ money($account->sum_credits_amount) }}
+                                    </small>
+                                </div>
                             </td>
                             <td class="text-right" width="100">0</td>
                             <td class="text-right">

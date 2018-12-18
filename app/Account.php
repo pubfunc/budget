@@ -15,6 +15,13 @@ class Account extends Model
 {
     use Traits\BelongsToOrganizationTrait;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'currency'
+    ];
+
+
     public function transactions(){
         return Transaction::forAccount($this);
     }
@@ -44,18 +51,24 @@ class Account extends Model
         $query->where('type', $type);
     }
 
-    public function getDebitsAmountAttribute(){
+    public function getSumDebitsAmountAttribute(){
         if($this->sum_debits !== null){
             return $this->normalSide() === AccountSides::DEBIT ? $this->sum_debits : -$this->sum_debits;
         }
         return null;
     }
 
-    public function getCreditsAmountAttribute(){
+    public function getSumCreditsAmountAttribute(){
         if($this->sum_credits !== null){
             return $this->normalSide() === AccountSides::CREDIT ? $this->sum_credits : -$this->sum_credits;
         }
         return null;
+    }
+
+    public function getBalanceAmountAttribute(){
+        if($this->sum_credits !== null && $this->sum_debits !== null){
+            return $this->sum_credits_amount + $this->sum_debits_amount;
+        }
     }
 
     public function normalSide(){

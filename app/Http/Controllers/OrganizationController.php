@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Organization;
+use App\Account;
 use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
@@ -56,6 +57,22 @@ class OrganizationController extends Controller
         $org->save();
     
         $org->users()->attach($user);
+
+        $base_accounts = [];
+
+        // create base personal accounts
+        foreach(config('accounts.personal') as $type => $accounts){
+            foreach($accounts as $account){
+
+                $account = new Account($account);
+                $account->type = $type;
+                $account->currency = 'ZAR';
+
+                $base_accounts[] = $account;
+            }
+        }
+
+        $org->accounts()->saveMany($base_accounts);
 
         return redirect()->route('organization.show', $org->slug);
 

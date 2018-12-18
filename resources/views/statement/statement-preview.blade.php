@@ -29,7 +29,7 @@
                             <th>Period Start</th>
                             <td>{{ carbon($data->period_start)->toFormattedDateString() }}</td>
                             <th># Transactions</th>
-                            <td>{{ count($data->transactions) }}</td>
+                            <td>{{ count($data->records) }}</td>
                         </tr>
                         <tr>
                             <th>Period End</th>
@@ -89,15 +89,15 @@
                                 <td>{{ money($data->open_balance, $data->currency) }}</td>
                             </tr>
                             @endif
-                            @foreach($data->records() as $record)
+                            @foreach($data->records as $record)
                             <tr>
                                 <td class="text-center">
                                     <input type="checkbox" value="option1">
                                 </td>
-                                <td class="text-nowrap">{{ $record['date']->toDateString() }}</td>
-                                <td class="text-monospace small">{{ $record['description'] }}</td>
-                                <td class="text-nowrap {{ $record['normal'] >= 0 ? 'text-success' : 'text-danger' }}">{{ money($record['normal'], $data->currency) }}</td>
-                                <td class="text-nowrap">{{ money($record['balance'], $data->currency) }}</td>
+                                <td class="text-nowrap">{{ $record->date->toDateString() }}</td>
+                                <td class="text-monospace small">{{ $record->description }}</td>
+                                <td class="text-nowrap {{ $record->amount >= 0 ? 'text-success' : 'text-danger' }}">{{ money($record->amount, $data->currency) }}</td>
+                                <td class="text-nowrap">{{ money($record->balance, $data->currency) }}</td>
                             </tr>
                             @endforeach
                             @if($data->close_balance)

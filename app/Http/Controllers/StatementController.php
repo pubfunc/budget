@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 
 use App\Accounting\Statements\StatementParser;
 use App\Accounting\AccountSides;
+use App\Accounting\AccountTypes;
 use App\Statement;
 use App\Organization;
 use App\Transaction;
@@ -56,18 +57,22 @@ class StatementController extends Controller
     public function import(Organization $org, Statement $statement, Request $request){
 
         $account = $org->accounts()->findOrFail($request->account_id);
+        $balance_side = AccountTypes::normalBalanceSide($account->type);
 
         $data = (new StatementParser())->parseFile($statement->format, $statement->fullPath());
 
-        foreach($data->records() as $record){
+        foreach($data->records as $record){
             $transaction = new Transaction();
             $transaction->organization()->associate($org);
-            $transaction->date = $record['date'];
-            $transaction->description = $record['description'];
-            $transaction->amount = $record['amount'];
-            if($record['side'] === AccountSides::DEBIT){
+            $transaction->date = $record->date;
+            $transaction->description = $record->description;
+            $transaction->amount = abs($record->amount);
+
+            $side = $record->amount >= 0 ? $balance_side : AccountSides::opposite($balance_side);
+
+            if($side === AccountSides::DEBIT){
                 $transaction->debitAccount()->associate($account);
-            }elseif($record['side'] === AccountSides::CREDIT){
+            }elseif($side === AccountSides::CREDIT){
                 $transaction->creditAccount()->associate($account);
             }
 

@@ -2,10 +2,15 @@
 
     $input_name = isset($name) ? $name : '_unnamed_';
     $input_id = isset($id) ? $id : 'input_' . $input_name;
-    $input_value = old($input_name, isset($value) ? $value : '');
+    $input_value = old($input_name, isset($value) ? $value : null);
     $is_valid = $errors->isNotEmpty() && !$errors->has($input_name);
     $is_invalid = $errors->isNotEmpty() && $errors->has($input_name);
     $input_type = isset($type) ? $type : 'text';
+
+    if($input_type === 'date' && $input_value instanceof DateTime){
+        $input_value = $input_value->format('Y-m-d');
+    }
+
 @endphp
 <div class="form-group">
     @isset($label)
@@ -46,7 +51,9 @@
             name="{{ $input_name }}"
             rows="3"
             class="form-control{{ $is_valid ? ' is-valid' : '' }}{{ $is_invalid ? ' is-invalid' : '' }}">{{ $input_value }}</textarea>
+
     @else
+
     <input type="{{ $input_type }}"
             id="{{ $input_id }}"
             name="{{ $input_name }}"

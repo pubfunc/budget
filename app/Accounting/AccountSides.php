@@ -11,4 +11,10 @@ class AccountSides {
         self::DEBIT,
     ];
 
+    static function opposite($side){
+        if($side === self::DEBIT) return self::CREDIT;
+        if($side === self::CREDIT) return self::DEBIT;
+        throw new InvalidArgumentException("Unknown account side '$side'");
+    }
+
 }
